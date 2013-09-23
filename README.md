@@ -21,3 +21,8 @@ To use the web-based console:
 ```
 http://192.168.33.11:8000/alerta/dashboard/v2/index.html
 ```
+
+License
+-------
+
+Copyright (c) 2013 Nick Satterly. Available under the MIT License.
