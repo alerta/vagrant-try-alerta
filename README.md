@@ -4,8 +4,8 @@ Try Alerta
 To run Riemann and Alerta in a virtual machine run:
 
 ```
-$ git clone https://github.com/alerta/try-alerta.git
-$ cd try-alerta
+$ git clone https://github.com/alerta/vagrant-try-alerta.git
+$ cd vagrant-try-alerta
 $ vagrant up
 ```
 
