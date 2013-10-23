@@ -1,5 +1,5 @@
-Try Alerta
-==========
+Try Alerta using Vagrant
+========================
 
 To run Riemann and Alerta in a virtual machine run:
 
