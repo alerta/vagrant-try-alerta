@@ -40,3 +40,9 @@ wget -O /etc/apache2/conf.d/alerta-dashboard.conf https://raw.github.com/${GIT_R
 chgrp www-data /var/log/alerta
 apachectl graceful
 
+wget -O /var/tmp/create-alerts.sh https://raw.github.com/${GIT_REPO}/master/files/create-alerts.sh
+chmod +x /var/tmp/create-alerts.sh && /var/tmp/create-alerts.sh
+
+echo "Alerta version: " `pip list | grep alerta`
+echo "Alerta URL: http://192.168.33.15:8080/alerta/dashboard/v2/index.index.html"
+echo "Alerta API URL: http://192.168.33.15:8080/alerta/api/v2/alerts"
