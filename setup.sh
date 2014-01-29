@@ -30,6 +30,8 @@ wget -qO /etc/init/alerta.conf https://raw.github.com/${GIT_REPO}/master/files/u
 initctl reload-configuration alerta
 service alerta restart
 
+PYTHON_ROOT_DIR=`pip show alerta | awk '/Location/ { print $2 } '`
+
 # Install and configure Apache web server
 sudo apt-get install -y apache2 libapache2-mod-wsgi
 mkdir -p /var/www/alerta
@@ -37,12 +39,14 @@ wget -qO /var/www/alerta/alerta-api.wsgi https://raw.github.com/${GIT_REPO}/mast
 wget -qO /etc/apache2/conf.d/alerta-api.conf https://raw.github.com/${GIT_REPO}/master/files/httpd-alerta-api.conf
 wget -qO /var/www/alerta/alerta-dashboard.wsgi https://raw.github.com/${GIT_REPO}/master/files/alerta-dashboard.wsgi
 wget -qO /etc/apache2/conf.d/alerta-dashboard.conf https://raw.github.com/${GIT_REPO}/master/files/httpd-alerta-dashboard.conf
+sed -i "s#@STATIC@#$PYTHON_ROOT_DIR#" /etc/apache2/conf.d/alerta-dashboard.conf
 chmod 0775 /var/log/alerta && chgrp www-data /var/log/alerta
 apachectl graceful
 
-wget -O /var/tmp/create-alerts.sh https://raw.github.com/${GIT_REPO}/master/files/create-alerts.sh
+wget -qO /var/tmp/create-alerts.sh https://raw.github.com/${GIT_REPO}/master/files/create-alerts.sh
 chmod +x /var/tmp/create-alerts.sh && /var/tmp/create-alerts.sh
 
-echo "Alerta version: " `pip list | grep alerta`
-echo "Alerta URL: http://192.168.33.15/alerta/dashboard/v2/index.html"
+pip show alerta
+
+echo "Alerta Console: http://192.168.33.15/alerta/dashboard/v2/index.html"
 echo "Alerta API URL: http://192.168.33.15:8080/alerta/api/v2/alerts"
