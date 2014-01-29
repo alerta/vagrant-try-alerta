@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/sh -e
 
 GIT_REPO=alerta/vagrant-try-alerta
 
@@ -48,5 +48,6 @@ chmod +x /var/tmp/create-alerts.sh && /var/tmp/create-alerts.sh
 
 pip show alerta
 
-echo "Alerta Console: http://192.168.33.15/alerta/dashboard/v2/index.html"
-echo "Alerta API URL: http://192.168.33.15:8080/alerta/api/v2/alerts"
+echo "Alerta Console:  http://192.168.33.15/alerta/dashboard/v2/index.html"
+echo "Alerta API URL:  http://192.168.33.15:8080/alerta/api/v2"
+echo "Alerta Mgmt URL: http://192.168.33.15:8080/alerta/management"

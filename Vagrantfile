@@ -10,9 +10,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.network :forwarded_port, guest: 80, host: 8000      # alerta-dashboard
   config.vm.network :forwarded_port, guest: 8080, host: 8080    # alerta-api
+  config.vm.network :forwarded_port, guest: 15672, host: 15672  # rabbitmq-mgmt
   config.vm.network :forwarded_port, guest: 55672, host: 55672  # rabbitmq-mgmt
-  config.vm.network :forwarded_port, guest: 4567, host: 4567    # riemann-dash
-  config.vm.network :forwarded_port, guest: 5556, host: 5556    # riemann-ws
 
   config.vm.provision :shell, :path => "setup.sh"
 
