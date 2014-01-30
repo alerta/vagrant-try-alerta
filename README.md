@@ -18,9 +18,15 @@ $ alert-query
 
 To use the web-based console:
 
-```
-http://192.168.33.11:8000/alerta/dashboard/v2/index.html
-```
+http://192.168.33.15/alerta/dashboard/v2/index.html
+
+To access the API:
+
+http://192.168.33.15:8080/alerta/api/v2
+
+To view the application management web pages:
+
+http://192.168.33.15:8080/alerta/management
 
 License
 -------
