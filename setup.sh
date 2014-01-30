@@ -6,16 +6,14 @@ GIT_REPO=alerta/vagrant-try-alerta
 sudo apt-get update
 
 # Install required dependencies
-sudo apt-get install -y git wget python-setuptools python-pip
-sudo apt-get install -y build-essential python-dev
+sudo apt-get install -y git wget python-setuptools python-pip build-essential python-dev
+sudo apt-get install -y mongodb-server rabbitmq-server apache2 libapache2-mod-wsgi
 
-# Install and configure MongoDB
-sudo apt-get install -y mongodb-server
+# Configure MongoDB
 grep -q smallfiles /etc/mongodb.conf || echo "smallfiles = true" | sudo tee -a /etc/mongodb.conf
 service mongodb restart
 
-# Install and configure RabbitMQ
-sudo apt-get install -y rabbitmq-server
+# Configure RabbitMQ
 sudo /usr/lib/rabbitmq/bin/rabbitmq-plugins enable rabbitmq_management
 sudo /usr/lib/rabbitmq/bin/rabbitmq-plugins enable rabbitmq_stomp
 sudo service rabbitmq-server restart
@@ -25,25 +23,24 @@ wget -qO /var/tmp/rabbitmqadmin http://guest:guest@localhost:55672/cli/rabbitmqa
 # Install and configure Alerta
 sudo pip install alerta
 mkdir -p /etc/alerta
-wget -qO /etc/alerta/alerta.conf https://raw.github.com/${GIT_REPO}/master/files/alerta.conf
-wget -qO /etc/init/alerta.conf https://raw.github.com/${GIT_REPO}/master/files/upstart-alerta.conf
+cp /vagrant/files/alerta.conf /etc/alerta/alerta.conf
+cp /vagrant/files/upstart-alerta.conf /etc/init/alerta.conf
 initctl reload-configuration alerta
 service alerta restart
 
-PYTHON_ROOT_DIR=`pip show alerta | awk '/Location/ { print $2 } '`
-
-# Install and configure Apache web server
-sudo apt-get install -y apache2 libapache2-mod-wsgi
+# Configure Apache web server
 mkdir -p /var/www/alerta
-wget -qO /var/www/alerta/alerta-api.wsgi https://raw.github.com/${GIT_REPO}/master/files/alerta-api.wsgi
-wget -qO /etc/apache2/conf.d/alerta-api.conf https://raw.github.com/${GIT_REPO}/master/files/httpd-alerta-api.conf
-wget -qO /var/www/alerta/alerta-dashboard.wsgi https://raw.github.com/${GIT_REPO}/master/files/alerta-dashboard.wsgi
-wget -qO /etc/apache2/conf.d/alerta-dashboard.conf https://raw.github.com/${GIT_REPO}/master/files/httpd-alerta-dashboard.conf
+cp /vagrant/files/alerta-api.wsgi /var/www/alerta/alerta-api.wsgi
+cp /vagrant/files/httpd-alerta-api.conf /etc/apache2/conf.d/alerta-api.conf
+cp /vagrant/files/alerta-dashboard.wsgi /var/www/alerta/alerta-dashboard.wsgi
+cp /vagrant/files/httpd-alerta-dashboard.conf /etc/apache2/conf.d/alerta-dashboard.conf
+PYTHON_ROOT_DIR=`pip show alerta | awk '/Location/ { print $2 } '`
 sed -i "s#@STATIC@#$PYTHON_ROOT_DIR#" /etc/apache2/conf.d/alerta-dashboard.conf
 chmod 0775 /var/log/alerta && chgrp www-data /var/log/alerta
-apachectl graceful
+service apache2 restart
 
-wget -qO /var/tmp/create-alerts.sh https://raw.github.com/${GIT_REPO}/master/files/create-alerts.sh
+# Generate test alerts
+cp /vagrant/files/create-alerts.sh /var/tmp/create-alerts.sh
 chmod +x /var/tmp/create-alerts.sh && /var/tmp/create-alerts.sh
 
 pip show alerta
