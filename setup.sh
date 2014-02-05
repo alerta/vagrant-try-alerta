@@ -34,12 +34,15 @@ sudo cp /vagrant/files/alerta-dashboard.wsgi /var/www/alerta/alerta-dashboard.ws
 sudo cp /vagrant/files/httpd-alerta-dashboard.conf /etc/apache2/conf.d/alerta-dashboard.conf
 PYTHON_ROOT_DIR=`pip show alerta | awk '/Location/ { print $2 } '`
 sudo sed -i "s#@STATIC@#$PYTHON_ROOT_DIR#" /etc/apache2/conf.d/alerta-dashboard.conf
-sudo chmod 0775 /var/log/alerta && sudo chgrp www-data /var/log/alerta
+sudo chmod 0777 /var/log/alerta && sudo chgrp www-data /var/log/alerta
 sudo service apache2 restart
 
 # Generate test alerts
 cp /vagrant/files/create-alerts.sh /var/tmp/create-alerts.sh
 chmod +x /var/tmp/create-alerts.sh && /var/tmp/create-alerts.sh
+
+# Clean-up
+mongo monitoring --eval 'db.heartbeats.remove()'
 
 pip show alerta
 

@@ -32,10 +32,10 @@ curl -XPOST -H "Content-type: application/json" 'http://localhost:8080/alerta/ap
     "service": [
         "Network"
     ],
-    "tags": [
-        "location=London",
-         "region=EU"
-    ],
+    "tags": {
+        "location": "London",
+         "region": "EU"
+    },
     "text": "Firewall is not responding to ping."
 }'
 echo
@@ -53,10 +53,10 @@ curl -XPOST -H "Content-type: application/json" 'http://localhost:8080/alerta/ap
     "service": [
         "Common"
     ],
-    "tags": [
-        "location=London",
-         "region=EU"
-    ],
+    "tags": {
+        "location": "London",
+         "region": "EU"
+    },
     "text": "Router is up."
 }'
 echo
@@ -75,10 +75,10 @@ curl -XPOST -H "Content-type: application/json" 'http://localhost:8080/alerta/ap
     "service": [
         "Common"
     ],
-    "tags": [
-        "location=London",
-         "region=EU"
-    ],
+    "tags": {
+        "location": "London",
+         "region": "EU"
+    },
     "text": "Oracle 011 error."
 }'
 echo
@@ -96,10 +96,10 @@ curl -XPOST -H "Content-type: application/json" 'http://localhost:8080/alerta/ap
     "service": [
         "Web"
     ],
-    "tags": [
-        "location=London",
-         "region=EU"
-    ],
+    "tags": {
+        "location": "Sydney",
+         "region": "AU"
+    },
     "text": "Service unavailable."
 }'
 echo
