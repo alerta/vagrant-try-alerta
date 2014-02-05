@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+set -x
+
 # Install required dependencies
 sudo apt-get -y install python-setuptools python-pip build-essential python-dev
 sudo apt-get -y install mongodb-server rabbitmq-server apache2 libapache2-mod-wsgi
