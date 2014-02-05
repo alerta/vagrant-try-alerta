@@ -50,17 +50,17 @@ Each vagrant box is configured to use a different IP address:
 | Alerta Zabbix  | 192.168.0.102 |
 | Alerta Riemann | 192.168.0.103 |
 
-To use the web-based console:
+To use the web-based console for the Alerta Riemann vagrant box, for example:
 
-http://<ip_address>/alerta/dashboard/v2/index.html
+http://192.168.0.103/alerta/dashboard/v2/index.html
 
 To access the API:
 
-http://<ip_address>:8080/alerta/api/v2
+http://192.168.0.103:8080/alerta/api/v2
 
 To view the application management web pages:
 
-http://<ip_address>:8080/alerta/management
+http://192.168.0.103:8080/alerta/management
 
 License
 -------
