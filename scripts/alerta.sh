@@ -1,11 +1,8 @@
 #!/bin/sh -e
 
-# Update packages
-sudo apt-get update
-
 # Install required dependencies
-sudo apt-get install -y git wget python-setuptools python-pip build-essential python-dev
-sudo apt-get install -y mongodb-server rabbitmq-server apache2 libapache2-mod-wsgi
+sudo apt-get -y install python-setuptools python-pip build-essential python-dev
+sudo apt-get -y install mongodb-server rabbitmq-server apache2 libapache2-mod-wsgi
 
 # Configure MongoDB
 grep -q smallfiles /etc/mongodb.conf || echo "smallfiles = true" | sudo tee -a /etc/mongodb.conf
