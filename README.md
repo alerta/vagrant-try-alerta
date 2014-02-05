@@ -33,12 +33,15 @@ $ vagrant up alerta-riemann
 $ vagrant ssh alerta-riemann
 ```
 
-To use the command-line tools:
+To use the command-line tools on the Alerta-Nagios3 vagrant box, for example, run:
 
 ```
+$ vagrant ssh alerta-nagios3 -- -A
 $ alert-query
 $ alert-sender
 ```
+
+Each vagrant box is configured to use a different IP address:
 
 | VM Image       | IP Address    |
 | -------------- | --------------|
