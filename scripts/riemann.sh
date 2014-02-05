@@ -19,5 +19,6 @@ sudo cp alerta.clj /etc/riemann/
 
 sudo service riemann restart
 
-sudo gem install riemann-tools -no-ri -no-rdoc
+sudo gem update
+sudo gem install riemann-tools --no-ri --no-rdoc
 riemann-health --host 127.0.0.1 &
