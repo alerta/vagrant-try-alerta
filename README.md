@@ -40,9 +40,11 @@ $ alert-query
 $ alert-sender
 ```
 
-| Alerta only | 192.168.0.103 |
-| Alerta Nagios3 | 192.168.0.103 |
-| Alerta Zabbix | 192.168.0.103 |
+| VM Image       | IP Address    |
+| -------------- | --------------|
+| Alerta only    | 192.168.0.100 |
+| Alerta Nagios3 | 192.168.0.101 |
+| Alerta Zabbix  | 192.168.0.102 |
 | Alerta Riemann | 192.168.0.103 |
 
 To use the web-based console:
