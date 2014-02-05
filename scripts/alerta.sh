@@ -16,7 +16,7 @@ sudo /usr/lib/rabbitmq/bin/rabbitmq-plugins enable rabbitmq_management
 sudo /usr/lib/rabbitmq/bin/rabbitmq-plugins enable rabbitmq_stomp
 sudo service rabbitmq-server restart
 wget -qO /var/tmp/rabbitmqadmin http://guest:guest@localhost:55672/cli/rabbitmqadmin && chmod +x /var/tmp/rabbitmqadmin
-/var/tmp/rabbitmqadmin declare exchange name=alerts type=fanout
+/var/tmp/rabbitmqadmin declare exchange name=alerts type=fanout durable=true
 
 # Install and configure Alerta
 sudo pip install alerta
@@ -45,7 +45,3 @@ chmod +x /var/tmp/create-alerts.sh && /var/tmp/create-alerts.sh
 mongo monitoring --eval 'db.heartbeats.remove()'
 
 pip show alerta
-
-echo "Alerta Console:  http://192.168.33.15/alerta/dashboard/v2/index.html"
-echo "Alerta API URL:  http://192.168.33.15:8080/alerta/api/v2"
-echo "Alerta Mgmt URL: http://192.168.33.15:8080/alerta/management"
