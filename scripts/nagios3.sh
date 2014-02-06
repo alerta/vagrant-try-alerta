@@ -7,13 +7,12 @@ echo “nagios3-cgi nagios3/adminpassword password nagiosadmin” | debconf-set-
 echo “nagios3-cgi nagios3/adminpassword-repeat password nagiosadmin” | debconf-set-selections
 
 export DEBIAN_FRONTEND=noninteractive
-apt-get -y install nagios3 nagios-nrpe-plugin
+apt-get -y install nagios3 nagios-nrpe-plugin libcurl4-openssl-dev
 
-exit 0
 git clone https://github.com/alerta/nagios3-alerta.git
 cd nagios3-alerta
 make && make install
 
-echo "broker_module=/usr/lib/nagios3/alerta-neb.o http://localhost:8080 debug=1" | tee /etc/nagios/nagios.cfg
+echo "broker_module=/usr/lib/nagios3/alerta-neb.o http://localhost:8080 debug=1" | tee -a /etc/nagios3/nagios.cfg
 service nagios3 restart
 
