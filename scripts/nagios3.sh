@@ -1,8 +1,19 @@
 #!/bin/sh -e
 
-echo “postfix postfix/main_mailer_type select No configuration” | sudo debconf-set-selections
-echo “nagios3-cgi nagios3/adminpassword password nagiosadmin” | sudo debconf-set-selections
-echo “nagios3-cgi nagios3/adminpassword-repeat password nagiosadmin” | sudo debconf-set-selections
-sudo apt-get -y install nagios3 nagios-nrpe-plugin
+set -x
 
+echo “postfix postfix/main_mailer_type select No configuration” | debconf-set-selections
+echo “nagios3-cgi nagios3/adminpassword password nagiosadmin” | debconf-set-selections
+echo “nagios3-cgi nagios3/adminpassword-repeat password nagiosadmin” | debconf-set-selections
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get -y install nagios3 nagios-nrpe-plugin
+
+exit 0
+git clone https://github.com/alerta/nagios3-alerta.git
+cd nagios3-alerta
+make && make install
+
+echo "broker_module=/usr/lib/nagios3/alerta-neb.o http://localhost:8080 debug=1" | tee /etc/nagios/nagios.cfg
+service nagios3 restart
 

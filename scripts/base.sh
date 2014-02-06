@@ -2,6 +2,6 @@
 
 set -x
 
-sudo apt-get -y update
-# sudo apt-get -y install language-pack-en
-sudo apt-get -y install curl wget
+apt-get -y update
+# apt-get -y install language-pack-en
+apt-get -y install curl wget
