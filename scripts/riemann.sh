@@ -16,6 +16,9 @@ sudo cp riemann.config /etc/riemann/
 wget https://raw.github.com/alerta/riemann-alerta/master/alerta.clj
 sudo cp alerta.clj /etc/riemann/
 
+sudo rm -f /etc/init.d/riemann
+sudo cp /vagrant/files/upstart-riemann.conf /etc/init/riemann.conf
+sudo initctl reload-configuration riemann
 sudo service riemann restart
 
 # Nokogiri
