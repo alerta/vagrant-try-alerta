@@ -3,20 +3,11 @@
 
 Vagrant.configure("2") do |config|
 
-  # config.vm.box = "precise64"
+  # config.vm.box = "precise64"  # 12.04
   # config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box"
 
-  # config.vm.box = "quantal64"
-  # config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/quantal/current/quantal-server-cloudimg-amd64-vagrant-disk1.img"
-
-  # config.vm.box = "raring64"
-  # config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/current/raring-server-cloudimg-amd64-vagrant-disk1.box"
-
-  config.vm.box = "saucy64"
-  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box"
-
-  # config.vm.box = "trusty64"
-  # config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box = "raring64"  # 13.04
+  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/current/raring-server-cloudimg-amd64-vagrant-disk1.box"
 
   config.vm.define "alerta", primary: true do |alerta|
     alerta.vm.network :private_network, ip: "192.168.0.100"

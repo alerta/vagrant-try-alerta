@@ -28,17 +28,18 @@ service alerta restart
 # Configure Apache web server
 mkdir -p /var/www/alerta
 cp /vagrant/files/alerta-api.wsgi /var/www/alerta/alerta-api.wsgi
-cp /vagrant/files/httpd-alerta-api.conf /etc/apache2/sites-available/alerta-api.conf
+cp /vagrant/files/httpd-alerta-api.conf /etc/apache2/sites-available/alerta-api
 a2ensite alerta-api
 
 cp /vagrant/files/alerta-dashboard.wsgi /var/www/alerta/alerta-dashboard.wsgi
-cp /vagrant/files/httpd-alerta-dashboard.conf /etc/apache2/sites-available/alerta-dashboard.conf
+cp /vagrant/files/httpd-alerta-dashboard.conf /etc/apache2/sites-available/alerta-dashboard
 PYTHON_ROOT_DIR=`python -c "import alerta; print(alerta.__dict__['__path__'][0])"`
-sed -i "s#@STATIC@#$PYTHON_ROOT_DIR#" /etc/apache2/sites-available/alerta-dashboard.conf
+sed -i "s#@STATIC@#$PYTHON_ROOT_DIR#" /etc/apache2/sites-available/alerta-dashboard
 a2ensite alerta-dashboard
 
 chmod 0777 /var/log/alerta && chgrp www-data /var/log/alerta
 a2dissite 000-default
+echo "ServerName localhost" >> /etc/apache2/apache2.conf
 service apache2 reload
 
 # Generate test alerts
