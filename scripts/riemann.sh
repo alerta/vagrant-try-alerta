@@ -5,7 +5,6 @@ set -x
 VERSION=0.2.4
 
 sudo apt-get -y install openjdk-7-jre ruby-dev
-
 cd /var/tmp
 wget -nv http://aphyr.com/riemann/riemann_${VERSION}_all.deb
 sudo dpkg -i riemann_${VERSION}_all.deb
@@ -19,6 +18,9 @@ sudo cp alerta.clj /etc/riemann/
 
 sudo service riemann restart
 
-sudo gem update
+# Nokogiri
+sudo apt-get -y install libxslt-dev libxml2-dev
+sudo gem install nokogiri -v '1.5.9' --no-ri --no-rdoc
+
 sudo gem install riemann-tools --no-ri --no-rdoc
 riemann-health --host 127.0.0.1 &

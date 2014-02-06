@@ -30,12 +30,15 @@ sudo mkdir -p /var/www/alerta
 sudo cp /vagrant/files/alerta-api.wsgi /var/www/alerta/alerta-api.wsgi
 sudo cp /vagrant/files/httpd-alerta-api.conf /etc/apache2/sites-available/alerta-api.conf
 sudo a2ensite alerta-api
+
 sudo cp /vagrant/files/alerta-dashboard.wsgi /var/www/alerta/alerta-dashboard.wsgi
 sudo cp /vagrant/files/httpd-alerta-dashboard.conf /etc/apache2/sites-available/alerta-dashboard.conf
-sudo a2ensite alerta-dashboard
 PYTHON_ROOT_DIR=`python -c "import alerta; print(alerta.__dict__['__path__'][0])"`
 sudo sed -i "s#@STATIC@#$PYTHON_ROOT_DIR#" /etc/apache2/sites-available/alerta-dashboard.conf
+sudo a2ensite alerta-dashboard
+
 sudo chmod 0777 /var/log/alerta && sudo chgrp www-data /var/log/alerta
+sudo a2dissite 000-default
 sudo service apache2 reload
 
 # Generate test alerts
