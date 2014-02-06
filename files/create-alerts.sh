@@ -117,10 +117,10 @@ curl -XPOST -H "Content-type: application/json" 'http://localhost:8080/alerta/ap
     "service": [
         "Platform"
     ],
-    "tags": [
-        "location=London",
-         "region=EU"
-    ],
+    "tags": {
+        "location": "Sydney",
+         "region": "AU"
+    },
     "text": "Swap utilisation is high."
 }'
 echo
