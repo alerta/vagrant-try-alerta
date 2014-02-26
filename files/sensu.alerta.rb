@@ -35,13 +35,15 @@ class Alerta < Sensu::Handler
     endpoint = settings['alerta']['endpoint'] || 'http://localhost:8080/alerta/api/v2/alerts/alert.json'
     hostname = Socket.gethostname
 
+    environment = @event['check']['environment'] || 'unknown'
+
     payload = {
       "origin" => "sensu/#{hostname}",
       "resource" => "#{@event['client']['name']}:#{@event['client']['address']}",
       "event" => "#{@event['check']['name']}",
       "group" => "Sensu",
       "severity" => "#{status_to_severity}",
-      "environment" => [ "PROD" ],
+      "environment" => [ environment ],
       "service" => @event['client']['subscriptions'],
       "tags" => {
         "subscribers" => "#{@event['check']['subscribers'].join(",")}",
@@ -58,8 +60,9 @@ class Alerta < Sensu::Handler
 
     begin
       timeout 10 do
-        HTTParty.post(endpoint, :body => payload, :headers => { 'Content-Type' => 'application/json' })
-        puts 'alerta -- sent alert for ' + short_name + ' to ' + endpoint
+        ret = HTTParty.post(endpoint, :body => payload, :headers => { 'Content-Type' => 'application/json' })
+        id = ret.parsed_response['response']['id']
+        puts 'alerta -- sent alert for ' + short_name + ' id: ' + id
       end
     rescue Timeout::Error
       puts 'alerta -- timed out while attempting to ' + @event['action'] + ' an incident -- ' + short_name
