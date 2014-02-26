@@ -34,11 +34,13 @@
   },
   "checks": {
     "test": {
-      "command": "echo -n FAIL && exit 1",
+      "command": "test -f /ok && echo \"OK - File found\" || (echo \"ERROR - File not found\" && exit 1)",
       "subscribers": [
         "test"
       ],
-      "interval": 60
+      "occurrences": 1,
+      "interval": 10,
+      "refresh": 30
     }
   },
   "client": {
