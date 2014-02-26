@@ -2,6 +2,7 @@
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-handler'
+require 'socket'
 require 'httparty'
 require 'json'
 require 'timeout'
@@ -32,9 +33,10 @@ class Alerta < Sensu::Handler
 
   def handle
     endpoint = settings['alerta']['endpoint'] || 'http://localhost:8080/alerta/api/v2/alerts/alert.json'
+    hostname = Socket.gethostname
 
     payload = {
-      "origin" => "sensu/localhost",
+      "origin" => "sensu/#{hostname}",
       "resource" => "#{@event['client']['name']}:#{@event['client']['address']}",
       "event" => "#{@event['check']['name']}",
       "group" => "Sensu",
@@ -56,8 +58,8 @@ class Alerta < Sensu::Handler
 
     begin
       timeout 10 do
-        HTTParty.post(settings['alerta']['endpoint'], :body => payload, :headers => { 'Content-Type' => 'application/json' })
-        puts 'alerta -- sent alert for ' + short_name + ' to ' + settings['alerta']['endpoint']
+        HTTParty.post(endpoint, :body => payload, :headers => { 'Content-Type' => 'application/json' })
+        puts 'alerta -- sent alert for ' + short_name + ' to ' + endpoint
       end
     rescue Timeout::Error
       puts 'alerta -- timed out while attempting to ' + @event['action'] + ' an incident -- ' + short_name
