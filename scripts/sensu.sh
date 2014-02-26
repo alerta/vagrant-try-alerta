@@ -1,16 +1,20 @@
-#!/bin/sh -x
+#!/bin/sh
+
+# set -x
 
 wget -q http://repos.sensuapp.org/apt/pubkey.gpg -O- | sudo apt-key add -
 echo "deb     http://repos.sensuapp.org/apt sensu main" > /etc/apt/sources.list.d/sensu.list
 apt-get -y update
 apt-get -y install redis-server sensu
 
-cd /etc/sensu/conf.d
-wget https://raw.githubusercontent.com/alerta/vagrant-try-alerta/master/files/sensu.api.json
-wget https://raw.githubusercontent.com/alerta/vagrant-try-alerta/master/files/sensu.dashboard.json
-wget https://raw.githubusercontent.com/alerta/vagrant-try-alerta/master/files/sensu.redis.json
-wget https://raw.githubusercontent.com/alerta/vagrant-try-alerta/master/files/sensu.client.json
-wget https://raw.githubusercontent.com/alerta/vagrant-try-alerta/master/files/sensu.rabbitmq.json
+wget -O /etc/sensu/conf.d/api.json https://raw.githubusercontent.com/alerta/vagrant-try-alerta/master/files/sensu.api.json
+wget -O /etc/sensu/conf.d/dashboard.json https://raw.github.com/alerta/vagrant-try-alerta/master/files/sensu.dashboard.json
+wget -O /etc/sensu/conf.d/redis.json https://raw.github.com/alerta/vagrant-try-alerta/master/files/sensu.redis.json
+wget -O /etc/sensu/conf.d/client.json https://raw.github.com/alerta/vagrant-try-alerta/master/files/sensu.client.json
+wget -O /etc/sensu/conf.d/rabbitmq.json https://raw.github.com/alerta/vagrant-try-alerta/master/files/sensu.rabbitmq.json
+
+wget -O /etc/sensu/handlers/alerta.rb https://raw.github.com/alerta/vagrant-try-alerta/master/files/sensu.alerta.rb
+wget -O /etc/sensu/conf.d/alerta.json https://raw.github.com/alerta/vagrant-try-alerta/master/files/sensu.alerta.json
 
 update-rc.d sensu-server defaults
 update-rc.d sensu-client defaults
