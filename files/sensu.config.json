@@ -47,6 +47,7 @@
     "name": "localhost",
     "address": "127.0.0.1",
     "subscriptions": [
+      "sensu",
       "test"
     ]
   }

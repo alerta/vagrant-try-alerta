@@ -8,11 +8,13 @@ apt-get -y update
 apt-get -y install redis-server sensu ruby-dev
 gem install sensu-plugin httparty
 
-wget -qO /etc/sensu/config.json https://raw.github.com/alerta/vagrant-try-alerta/master/files/sensu.config.json
-wget -qO /etc/sensu/conf.d/alerta.json https://raw.github.com/alerta/vagrant-try-alerta/master/files/sensu.alerta.json
-wget -qO /etc/sensu/handlers/alerta.rb https://raw.github.com/alerta/vagrant-try-alerta/master/files/sensu.alerta.rb
+wget -qO /etc/sensu/config.json https://raw.github.com/alerta/sensu-alerta/master/config/config.json
+wget -qO /etc/sensu/conf.d/alerta.json https://raw.github.com/alerta/sensu-alerta/master/alerta.json
+wget -qO /etc/sensu/handlers/alerta.rb https://raw.github.com/alerta/sensu-alerta/master/alerta.rb
 chmod +x /etc/sensu/handlers/alerta.rb
-wget -O /etc/sensu/plugins/check-procs.rb https://raw.github.com/sensu/sensu-community-plugins/master/plugins/processes/check-procs.rb
+
+wget -qO /etc/sensu/conf.d/check-procs.json https://raw.github.com/alerta/vagrant-try-alerta/master/files/sensu.check-procs.json
+wget -qO /etc/sensu/plugins/check-procs.rb https://raw.github.com/sensu/sensu-community-plugins/master/plugins/processes/check-procs.rb
 chmod 755 /etc/sensu/plugins/check-procs.rb
 
 rabbitmqctl add_vhost /sensu
