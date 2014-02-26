@@ -22,4 +22,4 @@ update-rc.d sensu-dashboard defaults
 /etc/init.d/sensu-api start
 /etc/init.d/sensu-dashboard start
 
-echo "Sensu dashboard... http://admin:secret@192.168.0.104:8080/"
+echo "Sensu dashboard... http://admin:secret@192.168.0.104:8081/"

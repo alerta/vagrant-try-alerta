@@ -1,6 +1,6 @@
 {
   "dashboard": {
-    "port": 8080,
+    "port": 8081,
     "user": "admin",
     "password": "secret"
   }
