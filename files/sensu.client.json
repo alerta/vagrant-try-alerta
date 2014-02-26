@@ -1,7 +1,0 @@
-{
-  "client": {
-    "name": "alerta-sensu",
-    "address": "192.168.0.104",
-    "subscriptions": [ "all" ]
-  }
-}
