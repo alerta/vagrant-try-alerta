@@ -41,4 +41,11 @@ Vagrant.configure("2") do |config|
     riemann.vm.provision :shell, :path => "scripts/riemann.sh"
   end
 
+  config.vm.define "alerta-sensu" do |sensu|
+    sensu.vm.network :private_network, ip: "192.168.0.104"
+    sensu.vm.provision :shell, :path => "scripts/base.sh"
+    sensu.vm.provision :shell, :path => "scripts/alerta.sh"
+    sensu.vm.provision :shell, :path => "scripts/sensu.sh"
+  end
+
 end
