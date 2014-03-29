@@ -33,6 +33,14 @@ $ vagrant up alerta-riemann
 $ vagrant ssh alerta-riemann
 ```
 
+To run Sensu and Alerta in the same virtual machine run:
+```
+$ git clone https://github.com/alerta/vagrant-try-alerta.git
+$ cd vagrant-try-alerta
+$ vagrant up alerta-sensu
+$ vagrant ssh alerta-sensu
+```
+
 To use the command-line tools on the Alerta-Nagios3 vagrant box, for example, run:
 
 ```
@@ -49,6 +57,7 @@ Each vagrant box is configured to use a different IP address:
 | Alerta Nagios3 | 192.168.0.101 |
 | Alerta Zabbix  | 192.168.0.102 |
 | Alerta Riemann | 192.168.0.103 |
+| Alerta & Sensu | 192.168.0.104 |
 
 To use the web-based console for the Alerta Riemann vagrant box, for example:
 
