@@ -6,7 +6,7 @@ To run Alerta in a virtual machine run:
 ```
 $ git clone https://github.com/alerta/vagrant-try-alerta.git
 $ cd vagrant-try-alerta
-$ vagrant up
+$ vagrant up alerta
 ```
 
 To run Nagios and Alerta in the same virtual machine run:
