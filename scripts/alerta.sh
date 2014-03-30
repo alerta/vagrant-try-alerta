@@ -18,26 +18,25 @@ service rabbitmq-server restart
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
 virtualenv alerta
-alerta/bin/pip install alerta
+alerta/bin/pip install alerta --upgrade
 
-# Configure Apache web server
+# Configure Alerta API
 wget -qO /etc/apache2/sites-available/alerta https://raw.githubusercontent.com/guardian/alerta/master/etc/httpd-alerta.conf
-mkdir /opt/alerta/apache
+mkdir -p /opt/alerta/apache
 wget -qO /opt/alerta/apache/app.wsgi https://raw.githubusercontent.com/guardian/alerta/master/alerta/app/app.wsgi
 a2ensite alerta
 
-#cp /vagrant/files/alerta-dashboard.wsgi /var/www/alerta/alerta-dashboard.wsgi
-#cp /vagrant/files/httpd-alerta-dashboard.conf /etc/apache2/sites-available/alerta-dashboard
-#PYTHON_ROOT_DIR=`python -c "import alerta; print(alerta.__dict__['__path__'][0])"`
-#sed -i "s#@STATIC@#$PYTHON_ROOT_DIR#" /etc/apache2/sites-available/alerta-dashboard
-#a2ensite alerta-dashboard
+# Configure Alerta Dashboard
+wget -qO /etc/apache2/sites-available/alerta-dashboard https://raw.githubusercontent.com/guardian/alerta/master/etc/httpd-alerta-dashboard.conf
+wget -qO /opt/alerta/apache/dashboard.wsgi https://raw.githubusercontent.com/guardian/alerta/master/alerta/dashboard/dashboard.wsgi
+a2ensite alerta-dashboard
 
+# Configure Apache
 a2dissite 000-default
 echo "ServerName localhost" >> /etc/apache2/apache2.conf
-apachectl restart
+service apache2 reload
 
 # Generate test alerts
 wget -qO - /var/tmp/create-alerts.sh https://raw.githubusercontent.com/guardian/alerta/master/contrib/examples/create-new-alert.sh | sh
 
-# Clean-up
-mongo monitoring --eval 'db.heartbeats.remove()'
+echo "Dashboard -> http://192.168.0.100/alerta/index.html"
