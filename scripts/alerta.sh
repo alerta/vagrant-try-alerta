@@ -18,7 +18,7 @@ service rabbitmq-server restart
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
 virtualenv alerta
-alerta/bin/pip install alerta --upgrade
+alerta/bin/pip install alerta
 
 # Configure Alerta API
 wget -qO /etc/apache2/sites-available/alerta https://raw.githubusercontent.com/guardian/alerta/master/etc/httpd-alerta.conf
