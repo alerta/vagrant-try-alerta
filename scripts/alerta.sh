@@ -3,7 +3,7 @@
 set -x
 
 # Install required dependencies
-apt-get -y install python-setuptools python-pip build-essential python-dev
+apt-get -y install python-setuptools python-pip build-essential python-dev python-virtualenv
 apt-get -y install mongodb-server rabbitmq-server apache2 libapache2-mod-wsgi
 
 # Configure MongoDB
@@ -15,14 +15,15 @@ service mongodb restart
 service rabbitmq-server restart
 
 # Install and configure Alerta
-pip install alerta
-groupadd alerta
-useradd -g alerta alerta
+id alerta || (groupadd alerta && useradd -g alerta alerta)
+cd /opt
+virtualenv alerta
+alerta/bin/pip install alerta
 
 # Configure Apache web server
 wget -qO /etc/apache2/sites-available/alerta https://raw.githubusercontent.com/guardian/alerta/master/etc/httpd-alerta.conf
-# FIXME - points to wsgi file in /opt/alerta...
-# FIXME - wsgi file tries to activate virtualenv
+mkdir /opt/alerta/apache
+wget -qO /opt/alerta/apache/app.wsgi https://raw.githubusercontent.com/guardian/alerta/master/alerta/app/app.wsgi
 a2ensite alerta
 
 #cp /vagrant/files/alerta-dashboard.wsgi /var/www/alerta/alerta-dashboard.wsgi
