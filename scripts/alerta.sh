@@ -18,6 +18,7 @@ id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
 virtualenv alerta
 alerta/bin/pip install alerta-server
+echo "PATH=$PATH:/opt/alerta/bin" >/etc/profile.d/alerta.sh
 
 cat >/etc/apache2/sites-available/000-default.conf << EOF
 Listen 8080
