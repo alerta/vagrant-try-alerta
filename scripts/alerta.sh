@@ -2,40 +2,73 @@
 
 set -x
 
-# Install required dependencies
-apt-get -y install python-setuptools python-pip build-essential python-dev python-virtualenv
-apt-get -y install mongodb-server rabbitmq-server apache2 libapache2-mod-wsgi
+export AUTH_REQUIRED=False
+export CLIENT_ID=not-set
+export REDIRECT_URL=not-set
+export ALLOWED_EMAIL_DOMAIN=*
 
-# Configure MongoDB
+apt-get -y update
+DEBIAN_FRONTEND=noninteractive apt-get -y install git wget build-essential python python-setuptools python-pip python-dev python-virtualenv
+DEBIAN_FRONTEND=noninteractive apt-get -y install mongodb-server apache2 libapache2-mod-wsgi
+
 grep -q smallfiles /etc/mongodb.conf || echo "smallfiles = true" | tee -a /etc/mongodb.conf
 service mongodb restart
 
-# Configure RabbitMQ
-/usr/lib/rabbitmq/bin/rabbitmq-plugins enable rabbitmq_management
-service rabbitmq-server restart
-
-# Install and configure Alerta
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
 virtualenv alerta
-alerta/bin/pip install alerta-app
+alerta/bin/pip install alerta-server
 
-# Configure Alerta API
-wget -qO /etc/apache2/sites-available/alerta https://raw.githubusercontent.com/guardian/alerta/master/etc/httpd-alerta.conf
-mkdir -p /opt/alerta/apache
-wget -qO /opt/alerta/apache/app.wsgi https://raw.githubusercontent.com/guardian/alerta/master/alerta/app/app.wsgi
-a2ensite alerta
+cat >/etc/apache2/sites-available/000-default.conf << EOF
+Listen 8080
+<VirtualHost *:8080>
+   ServerName localhost
+   WSGIDaemonProcess alerta processes=5 threads=5
+   WSGIProcessGroup alerta
+   WSGIScriptAlias / /var/www/api.wsgi
+   <Directory /opt/alerta>
+     WSGIApplicationGroup %{GLOBAL}
+     Require all granted
+   </Directory>
+</VirtualHost>
+<VirtualHost *:80>
+   DocumentRoot /var/www/html
+   <Directory /var/www/html>
+     Require all granted
+   </Directory>
+</VirtualHost>
+EOF
 
-# Configure Apache
+cat >/var/www/api.wsgi << EOF
+#/usr/bin/env python
+activate_this = '/opt/alerta/bin/activate_this.py'
+execfile(activate_this, dict(__file__=activate_this))
+from alerta.app import app as application
+EOF
+
+cat >/etc/alertad.conf << EOF
+DEBUG = True
+SECRET_KEY = '$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)'
+AUTH_REQUIRED = $AUTH_REQUIRED
+OAUTH2_CLIENT_ID = '$CLIENT_ID'
+ALLOWED_EMAIL_DOMAINS = ['$ALLOWED_EMAIL_DOMAIN']
+PLUGINS = ['']
+EOF
+
 echo "ServerName localhost" >> /etc/apache2/apache2.conf
 service apache2 reload
 
-# Configure Alerta Dashboard
 cd /var/www
-rm -Rf alerta*
-curl -L https://github.com/alerta/angular-alerta-webui/tarball/master | tar xz
-mv alerta-angular-alerta-webui-*/app/ alerta
+wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar zxf -
+mv alerta-angular-alerta-webui-*/app/* html
+rm -Rf alerta-angular-alerta-webui-*
 
-# Generate test alerts
-wget -qO - /var/tmp/create-alerts.sh https://raw.githubusercontent.com/guardian/alerta/master/contrib/examples/create-new-alert.sh | sh
-
+cat >/var/www/html/config.js << EOF
+'use strict';
+angular.module('config', [])
+  .constant('config', {
+    'endpoint'    : "http://"+window.location.hostname+":8080",
+    'client_id'   : "$CLIENT_ID",
+    'redirect_url': "$REDIRECT_URL"
+  });
+EOF
