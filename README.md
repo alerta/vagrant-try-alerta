@@ -44,9 +44,9 @@ $ vagrant ssh alerta-sensu
 To use the command-line tools on the Alerta-Nagios3 vagrant box, for example, run:
 
 ```
-$ vagrant ssh alerta-nagios3 -- -A
-$ alert-query
-$ alert-sender
+$ vagrant ssh alerta
+$ alerta send -r web01 -e NodeDown -s major -S Web -E Production -t "Server down."
+$ alerta query
 ```
 
 Each vagrant box is configured to use a different IP address:
@@ -61,7 +61,7 @@ Each vagrant box is configured to use a different IP address:
 
 To use the web-based console for the Alerta Riemann vagrant box, for example:
 
-http://192.168.0.103/alerta/dashboard/v2/index.html
+http://192.168.0.103/
 
 To access the API:
 
