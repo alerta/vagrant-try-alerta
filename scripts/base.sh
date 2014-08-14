@@ -3,6 +3,4 @@
 set -x
 
 apt-get -y update
-apt-get -y install language-pack-en
-apt-get -y install git curl wget
-apt-get -y install python-stdeb devscripts
+apt-get -y install language-pack-en git curl wget python-stdeb devscripts
