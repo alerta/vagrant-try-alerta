@@ -41,7 +41,7 @@ Listen 8080
 EOF
 
 cat >/var/www/api.wsgi << EOF
-#/usr/bin/env python
+#!/usr/bin/env python
 activate_this = '/opt/alerta/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
 from alerta.app import app as application
@@ -53,7 +53,7 @@ SECRET_KEY = '$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -
 AUTH_REQUIRED = $AUTH_REQUIRED
 OAUTH2_CLIENT_ID = '$CLIENT_ID'
 ALLOWED_EMAIL_DOMAINS = ['$ALLOWED_EMAIL_DOMAIN']
-PLUGINS = ['']
+PLUGINS = ['reject']
 EOF
 
 echo "ServerName localhost" >> /etc/apache2/apache2.conf
