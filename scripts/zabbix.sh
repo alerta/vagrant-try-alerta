@@ -1,13 +1,16 @@
 #!/bin/sh -e
 
+# Zabbix: http://192.168.0.102/zabbix
+# Username: Admin
+# Password: zabbix
+
 set -x
 
-curl http://repo.zabbix.com/zabbix-official-repo.key | apt-key add -
-echo "deb http://repo.zabbix.com/zabbix/2.2/debian wheezy main" >> /etc/apt/sources.list
+wget http://repo.zabbix.com/zabbix/2.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_2.2-1+trusty_all.deb
+dpkg -i zabbix-release_2.2-1+trusty_all.deb
+apt-get -y update
 
-apt-get update
 export DEBIAN_FRONTEND=noninteractive
-apt-get -y install snmp snmpd snmptt libsnmp15 libsnmp-base libsnmp-dev mysql-server
 apt-get -y install zabbix-server-mysql zabbix-frontend-php zabbix-agent zabbix-sender
 
 echo "START=yes" >> /etc/default/zabbix-server
