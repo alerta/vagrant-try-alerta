@@ -27,6 +27,7 @@ Listen 8080
    WSGIDaemonProcess alerta processes=5 threads=5
    WSGIProcessGroup alerta
    WSGIScriptAlias / /var/www/api.wsgi
+   WSGIPassAuthorization On
    <Directory /opt/alerta>
      WSGIApplicationGroup %{GLOBAL}
      Require all granted
