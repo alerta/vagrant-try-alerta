@@ -2,7 +2,7 @@
 
 set -x
 
-VERSION=0.2.4
+VERSION=0.2.6
 
 apt-get -y install openjdk-7-jre ruby-dev
 cd /var/tmp
