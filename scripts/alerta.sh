@@ -60,7 +60,7 @@ EOF
 echo "ServerName localhost" >> /etc/apache2/apache2.conf
 service apache2 reload
 
-cd /var/www
+cd /var/www && rm -Rf html/*
 wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar zxf -
 mv alerta-angular-alerta-webui-*/app/* html
 rm -Rf alerta-angular-alerta-webui-*

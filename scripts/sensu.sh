@@ -5,7 +5,8 @@
 wget -q http://repos.sensuapp.org/apt/pubkey.gpg -O- | sudo apt-key add -
 echo "deb     http://repos.sensuapp.org/apt sensu main" > /etc/apt/sources.list.d/sensu.list
 apt-get -y update
-apt-get -y install redis-server sensu ruby-dev
+apt-get -y install redis-server rabbitmq-server sensu uchiwa ruby-dev
+
 gem install sensu-plugin httparty
 
 wget -qO /etc/sensu/config.json https://raw.github.com/alerta/sensu-alerta/master/config/config.json
@@ -26,11 +27,10 @@ echo "LOG_LEVEL=debug" >>/etc/default/sensu
 update-rc.d sensu-server defaults
 update-rc.d sensu-client defaults
 update-rc.d sensu-api defaults
-update-rc.d sensu-dashboard defaults
+update-rc.d uchiwa defaults
 
 /etc/init.d/sensu-server start
 /etc/init.d/sensu-client start
 /etc/init.d/sensu-api start
-/etc/init.d/sensu-dashboard start
+/etc/init.d/uchiwa start
 
-echo "Sensu dashboard... http://admin:secret@192.168.0.104:8081/"
