@@ -51,4 +51,11 @@ Vagrant.configure("2") do |config|
     sensu.vm.provision :shell, :path => "scripts/sensu.sh"
   end
 
+  config.vm.define "alerta-kibana" do |kibana|
+    kibana.vm.network :private_network, ip: "192.168.0.105"
+    kibana.vm.provision :shell, :path => "scripts/base.sh"
+    kibana.vm.provision :shell, :path => "scripts/alerta.sh"
+    kibana.vm.provision :shell, :path => "scripts/kibana.sh"
+  end
+
 end
