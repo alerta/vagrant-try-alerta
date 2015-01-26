@@ -41,6 +41,14 @@ $ vagrant up alerta-sensu
 $ vagrant ssh alerta-sensu
 ```
 
+To run ELK stack (ie. Logstash & Kibana) and Alerta in the same virtual machine run:
+```
+$ git clone https://github.com/alerta/vagrant-try-alerta.git
+$ cd vagrant-try-alerta
+$ vagrant up alerta-kibana
+$ vagrant ssh alerta-kibana
+```
+
 To use the command-line tools on the Alerta-Nagios3 vagrant box, for example, run:
 
 ```
@@ -58,6 +66,7 @@ Each vagrant box is configured to use a different IP address:
 | Alerta & Zabbix  | 192.168.0.102 |
 | Alerta & Riemann | 192.168.0.103 |
 | Alerta & Sensu   | 192.168.0.104 |
+| Alerta & Kibana  | 192.168.0.105 |
 
 To use the web-based console for the Alerta Riemann vagrant box, for example:
 
