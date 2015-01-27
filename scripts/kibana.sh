@@ -18,21 +18,7 @@ cd /var/www
 wget -qO- http://download.elasticsearch.org/kibana/kibana/kibana-latest.tar.gz | tar zxf -
 mv /var/www/kibana-latest/ /var/www/html/kibana/
 
-cat >/etc/logstash/conf.d/alerta.conf << EOF
-input {
-    tcp {
-        port  => 1514
-        codec => json_lines
-    }
-}
-output {
-    # stdout {}
-    elasticsearch {
-        protocol => "http"
-        host     => "localhost"
-    }
-}
-EOF
+wget -qO /etc/logstash/conf.d/logstash.conf https://raw.githubusercontent.com/alerta/kibana-alerta/master/logstash.conf
 start logstash
 
 cat >>/etc/alertad.conf << EOF
