@@ -2,7 +2,7 @@
 
 set -x
 
-VERSION=0.2.6
+VERSION=0.2.8
 
 apt-get -y install openjdk-7-jre ruby-dev
 cd /var/tmp
@@ -22,8 +22,8 @@ initctl reload-configuration riemann
 service riemann restart
 
 # Nokogiri
-apt-get -y install libxslt-dev libxml2-dev
-gem install nokogiri -v '1.5.9' --no-ri --no-rdoc
+apt-get -y install libxslt-dev libxml2-dev zlib1g-dev
+gem install nokogiri --no-ri --no-rdoc
 
 gem install riemann-tools --no-ri --no-rdoc
 riemann-health --host 127.0.0.1 --tag location=london --tag os=linux &
