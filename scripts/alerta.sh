@@ -3,9 +3,6 @@
 set -x
 
 export AUTH_REQUIRED=False
-export CLIENT_ID=not-set
-export CLIENT_SECRET=not-set
-export ALLOWED_EMAIL_DOMAIN=*
 
 apt-get -y update
 DEBIAN_FRONTEND=noninteractive apt-get -y install git wget build-essential python python-setuptools python-pip python-dev python-virtualenv libffi-dev
@@ -54,9 +51,6 @@ cat >/etc/alertad.conf << EOF
 SECRET_KEY = '$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)'
 
 AUTH_REQUIRED = $AUTH_REQUIRED
-OAUTH2_CLIENT_ID = '$CLIENT_ID'
-OAUTH2_CLIENT_SECRET = '$CLIENT_SECRET'
-ALLOWED_EMAIL_DOMAINS = ['$ALLOWED_EMAIL_DOMAIN']
 
 PLUGINS = ['reject']
 EOF
@@ -75,7 +69,6 @@ cat >/var/www/html/config.js << EOF
 angular.module('config', [])
   .constant('config', {
     'endpoint'    : "/api",
-    'provider'    : "google",
-    'client_id'   : "$CLIENT_ID"
+    'provider'    : "basic"
   });
 EOF
