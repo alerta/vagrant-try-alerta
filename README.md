@@ -1,7 +1,7 @@
 Try Alerta using Vagrant
 ========================
 
-To run Alerta in a virtual machine run:
+To run Alerta in a [vagrant](https://www.vagrantup.com/) virtual machine run:
 
 ```
 $ git clone https://github.com/alerta/vagrant-try-alerta.git
@@ -83,4 +83,4 @@ http://192.168.0.103:8080/management
 License
 -------
 
-Copyright (c) 2013 Nick Satterly. Available under the MIT License.
+Copyright (c) 2015 Nick Satterly. Available under the MIT License.
