@@ -58,4 +58,11 @@ Vagrant.configure("2") do |config|
     kibana.vm.provision :shell, :path => "scripts/kibana.sh"
   end
 
+  config.vm.define "alerta-nagios4" do |nagios4|
+    nagios4.vm.network :private_network, ip: "192.168.0.106"
+    nagios4.vm.provision :shell, :path => "scripts/base.sh"
+    nagios4.vm.provision :shell, :path => "scripts/alerta.sh"
+    nagios4.vm.provision :shell, :path => "scripts/nagios4.sh"
+  end
+
 end

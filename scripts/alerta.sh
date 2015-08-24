@@ -70,5 +70,6 @@ angular.module('config', [])
   .constant('config', {
     'endpoint'    : "/api",
     'provider'    : "basic"
-  });
+  })
+  .constant('colors', {});
 EOF
