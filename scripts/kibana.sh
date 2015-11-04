@@ -3,23 +3,22 @@
 set -x
 
 DEBIAN_FRONTEND=noninteractive apt-get -y install openjdk-7-jre-headless
-wget -qO logstash.deb https://download.elasticsearch.org/logstash/logstash/packages/debian/logstash_1.4.2-1-2c0f5a1_all.deb && dpkg -i logstash.deb
-wget -qO logstash-contrib.deb https://download.elasticsearch.org/logstash/logstash/packages/debian/logstash-contrib_1.4.2-1-efd53ef_all.deb && dpkg -i logstash-contrib.deb
-wget -qO elasticsearch.deb https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.2.deb && dpkg -i elasticsearch.deb
+wget -qO logstash.deb https://download.elastic.co/logstash/logstash/packages/debian/logstash_2.0.0-1_all.deb && dpkg -i logstash.deb
+wget -qO elasticsearch.deb https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.0.0/elasticsearch-2.0.0.deb && dpkg -i elasticsearch.deb
 
-/usr/share/elasticsearch/bin/plugin --install mobz/elasticsearch-head
+/usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head
 cat >>/etc/elasticsearch/elasticsearch.yml << EOF
-http.cors.enabled: true
-http.cors.allow-origin: http://192.168.0.105
+cluster.name: alerta
 EOF
 service elasticsearch start
 
-cd /var/www
-wget -qO- http://download.elasticsearch.org/kibana/kibana/kibana-latest.tar.gz | tar zxf -
-mv /var/www/kibana-latest/ /var/www/html/kibana/
+cd /opt
+wget -qO- https://download.elastic.co/kibana/kibana/kibana-4.2.0-linux-x64.tar.gz | tar zxvf -
+ln -s kibana-* kibana4
+/opt/kibana4/bin/kibana serve -l /var/log/kibana4.log &
 
 wget -qO /etc/logstash/conf.d/logstash.conf https://raw.githubusercontent.com/alerta/kibana-alerta/master/logstash.conf
-start logstash
+service logstash start
 
 cat >>/etc/alertad.conf << EOF
 PLUGINS = ['reject','logstash']
@@ -29,6 +28,6 @@ EOF
 apachectl restart
 
 echo "Alerta URL:  http://192.168.0.105/"
-echo "Kibana URL:  http://192.168.0.105/kibana/#/dashboard/file/logstash.json"
+echo "Kibana URL:  http://192.168.0.105:5601/"
 echo "ES Head URL: http://192.168.0.105:9200/_plugin/head/"
 
