@@ -22,4 +22,3 @@ service apache2 restart
 wget https://raw.github.com/alerta/zabbix-alerta/master/zabbix_alerta.py
 cp zabbix_alerta.py /usr/lib/zabbix/alertscripts
 chmod 755 /usr/lib/zabbix/alertscripts/zabbix_alerta.py
-

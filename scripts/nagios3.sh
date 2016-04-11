@@ -17,4 +17,3 @@ echo "broker_module=/usr/lib/nagios/alerta-neb.o http://localhost:8080 debug=1" 
 cd /etc/nagios3/conf.d
 wget https://raw.github.com/alerta/nagios3-alerta/master/config/nagios3-heartbeat.cfg
 service nagios3 restart
-

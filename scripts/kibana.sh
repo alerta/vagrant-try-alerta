@@ -30,4 +30,3 @@ apachectl restart
 echo "Alerta URL:  http://192.168.0.105/"
 echo "Kibana URL:  http://192.168.0.105:5601/"
 echo "ES Head URL: http://192.168.0.105:9200/_plugin/head/"
-
