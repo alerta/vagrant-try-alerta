@@ -10,8 +10,11 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "raring64"  # 13.04
   # config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/current/raring-server-cloudimg-amd64-vagrant-disk1.box"
 
-  config.vm.box = "trusty64"  # 14.04
-  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  # config.vm.box = "trusty64"  # 14.04
+  # config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+
+  config.vm.box = "wily64"  # 15.10
+  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/wily/current/wily-server-cloudimg-amd64-vagrant-disk1.box"
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
@@ -63,6 +66,13 @@ Vagrant.configure("2") do |config|
     nagios4.vm.provision :shell, :path => "scripts/base.sh"
     nagios4.vm.provision :shell, :path => "scripts/alerta.sh"
     nagios4.vm.provision :shell, :path => "scripts/nagios4.sh"
+  end
+
+  config.vm.define "alerta-kapacitor" do |kapacitor|
+    kapacitor.vm.network :private_network, ip: "192.168.0.107"
+    kapacitor.vm.provision :shell, :path => "scripts/base.sh"
+    kapacitor.vm.provision :shell, :path => "scripts/alerta.sh"
+    kapacitor.vm.provision :shell, :path => "scripts/kapacitor.sh"
   end
 
 end
