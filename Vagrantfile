@@ -3,7 +3,6 @@
 
 Vagrant.configure("2") do |config|
 
-
   # config.vm.box = "precise64"  # 12.04
   # config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box"
 
@@ -24,6 +23,14 @@ Vagrant.configure("2") do |config|
     alerta.vm.network :private_network, ip: "192.168.0.100"
     alerta.vm.provision :shell, :path => "scripts/base.sh"
     alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+  end
+
+  config.vm.define "alerta-centos", primary: true do |centos7|
+    centos7.vm.box = "centos71"
+    centos7.vm.box_url = "https://github.com/CommanderK5/packer-centos-template/releases/download/0.7.1/vagrant-centos-7.1.box"
+    centos7.vm.network :private_network, ip: "192.168.0.110"
+    centos7.vm.provision :shell, :path => "scripts/centos/base.sh"
+    centos7.vm.provision :shell, :path => "scripts/centos/alerta.sh"
   end
 
   config.vm.define "alerta-nagios3" do |nagios3|
