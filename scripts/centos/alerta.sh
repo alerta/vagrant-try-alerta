@@ -2,7 +2,9 @@
 
 set -x
 
-yum -y install python-pip python-devel python-setuptools python-virtualenv libffi-devel
+export AUTH_REQUIRED=False
+
+yum -y install gcc python-pip python-devel python-setuptools python-virtualenv libffi-devel openssl-devel
 yum -y install httpd mod_wsgi mongodb-server
 
 grep -q ^smallfiles /etc/mongod.conf || echo "smallfiles = true" | tee -a /etc/mongod.conf
