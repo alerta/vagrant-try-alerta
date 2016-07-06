@@ -40,11 +40,11 @@ Vagrant.configure("2") do |config|
     nagios3.vm.provision :shell, :path => "scripts/nagios3.sh"
   end
 
-  config.vm.define "alerta-zabbix" do |zabbix|
-    zabbix.vm.network :private_network, ip: "192.168.0.102"
-    zabbix.vm.provision :shell, :path => "scripts/base.sh"
-    zabbix.vm.provision :shell, :path => "scripts/alerta.sh"
-    zabbix.vm.provision :shell, :path => "scripts/zabbix.sh"
+  config.vm.define "alerta-zabbix2" do |zabbix2|
+    zabbix2.vm.network :private_network, ip: "192.168.0.102"
+    zabbix2.vm.provision :shell, :path => "scripts/base.sh"
+    zabbix2.vm.provision :shell, :path => "scripts/alerta.sh"
+    zabbix2.vm.provision :shell, :path => "scripts/zabbix2.sh"
   end
 
   config.vm.define "alerta-riemann" do |riemann|
@@ -80,6 +80,26 @@ Vagrant.configure("2") do |config|
     kapacitor.vm.provision :shell, :path => "scripts/base.sh"
     kapacitor.vm.provision :shell, :path => "scripts/alerta.sh"
     kapacitor.vm.provision :shell, :path => "scripts/kapacitor.sh"
+  end
+
+  config.vm.define "alerta-uwsgi" do |uwsgi|
+    uwsgi.vm.network :private_network, ip: "192.168.0.108"
+    uwsgi.vm.provision :shell, :path => "scripts/base.sh"
+    uwsgi.vm.provision :shell, :path => "scripts/uwsgi.sh"
+  end
+
+  config.vm.define "alerta-kibana4" do |kibana4|
+    kibana4.vm.network :private_network, ip: "192.168.0.109"
+    kibana4.vm.provision :shell, :path => "scripts/base.sh"
+    kibana4.vm.provision :shell, :path => "scripts/alerta.sh"
+    kibana4.vm.provision :shell, :path => "scripts/kibana4.sh"
+  end
+
+  config.vm.define "alerta-zabbix3" do |zabbix3|
+    zabbix3.vm.network :private_network, ip: "192.168.0.110"
+    zabbix3.vm.provision :shell, :path => "scripts/base.sh"
+    zabbix3.vm.provision :shell, :path => "scripts/alerta.sh"
+    zabbix3.vm.provision :shell, :path => "scripts/zabbix3.sh"
   end
 
 end
