@@ -9,6 +9,8 @@ yum -y install httpd mod_wsgi mongodb-server
 pip install --upgrade pip setuptools wheel virtualenv
 
 grep -q ^smallfiles /etc/mongod.conf || echo "smallfiles = true" | tee -a /etc/mongod.conf
+systemctl start mongod
+systemctl enable mongod
 
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
