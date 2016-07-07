@@ -9,6 +9,7 @@ yum -y install httpd mod_wsgi mongodb-server
 pip install --upgrade pip setuptools wheel virtualenv
 
 grep -q ^smallfiles /etc/mongod.conf || echo "smallfiles = true" | tee -a /etc/mongod.conf
+/usr/sbin/setsebool -P httpd_can_network_connect 1  # change SELinux policy to allow httpd modules to connect to databases over the network
 systemctl start mongod
 systemctl enable mongod
 
