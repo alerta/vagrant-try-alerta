@@ -6,9 +6,9 @@ export AUTH_REQUIRED=False
 
 yum -y install gcc python-pip python-devel python-setuptools python-virtualenv libffi-devel openssl-devel
 yum -y install httpd mod_wsgi mongodb-server
+pip install --upgrade pip setuptools wheel virtualenv
 
 grep -q ^smallfiles /etc/mongod.conf || echo "smallfiles = true" | tee -a /etc/mongod.conf
-service mongod restart
 
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
@@ -55,7 +55,8 @@ PLUGINS = ['reject']
 EOF
 
 echo "ServerName localhost" >>/etc/httpd/conf/httpd.conf
-apachectl restart
+systemctl start httpd
+systemctl enable httpd
 
 cd /var/www && rm -Rf html/*
 wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar zxf -
