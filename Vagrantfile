@@ -9,11 +9,14 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "raring64"  # 13.04
   # config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/current/raring-server-cloudimg-amd64-vagrant-disk1.box"
 
-  config.vm.box = "trusty64"  # 14.04
-  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  # config.vm.box = "trusty64"  # 14.04
+  # config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
 
   # config.vm.box = "wily64"  # 15.10
   # config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/wily/current/wily-server-cloudimg-amd64-vagrant-disk1.box"
+
+  config.vm.box = "xenial64"  # 16.04
+  config.vm.box_url = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
@@ -103,5 +106,5 @@ Vagrant.configure("2") do |config|
     zabbix3.vm.provision :shell, :path => "scripts/alerta.sh"
     zabbix3.vm.provision :shell, :path => "scripts/zabbix3.sh"
   end
-
 end
+
