@@ -28,8 +28,7 @@ sudo make install-init
 sudo make install-config
 sudo make install-commandmode
 
-systemctl daemon-reload
-
+cd $HOME
 wget http://www.nagios-plugins.org/download/nagios-plugins-${NAGIOS_PLUGINS_VERSION}.tar.gz
 tar -xzf nagios-plugins-${NAGIOS_PLUGINS_VERSION}.tar.gz
 cd nagios-plugins-${NAGIOS_PLUGINS_VERSION}/
@@ -38,6 +37,7 @@ cd nagios-plugins-${NAGIOS_PLUGINS_VERSION}/
 make all
 make install
 
+cd $HOME
 git clone https://github.com/alerta/nagios-alerta.git
 cd nagios-alerta
 make nagios4 && make install
@@ -47,4 +47,5 @@ cd /usr/local/nagios/etc/objects
 wget https://raw.github.com/alerta/nagios-alerta/master/config/nagios4-heartbeat.cfg
 echo "cfg_file=/usr/local/nagios/etc/objects/nagios4-heartbeat.cfg" | tee -a /usr/local/nagios/etc/nagios.cfg
 
+systemctl daemon-reload
 service nagios restart
