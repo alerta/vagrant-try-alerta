@@ -59,14 +59,20 @@ $ alerta query
 
 Each vagrant box is configured to use a different IP address:
 
-| VM Image         | IP Address    |
-| ---------------- | --------------|
-| Alerta only      | 192.168.0.100 |
-| Alerta & Nagios3 | 192.168.0.101 |
-| Alerta & Zabbix  | 192.168.0.102 |
-| Alerta & Riemann | 192.168.0.103 |
-| Alerta & Sensu   | 192.168.0.104 |
-| Alerta & Kibana  | 192.168.0.105 |
+| VM Image           | IP Address    |
+|--------------------|---------------|
+| Alerta only        | 192.168.0.100 |
+| Alerta & Nagios3   | 192.168.0.101 |
+| Alerta & Zabbix    | 192.168.0.102 |
+| Alerta & Riemann   | 192.168.0.103 |
+| Alerta & Sensu     | 192.168.0.104 |
+| Alerta & Kibana3   | 192.168.0.105 |
+| Alerta & Nagios4   | 192.168.0.106 |
+| Alerta & kapacitor | 192.168.0.107 |
+| Alerta (uWsgi)     | 192.168.0.108 |
+| Alerta & Kibana4   | 192.168.0.109 |
+| Alerta on Centos7  | 192.168.0.110 |
+| Alerta & Zabbix3   | 192.168.0.111 |
 
 To use the web-based console for the Alerta Riemann vagrant box, for example:
 
