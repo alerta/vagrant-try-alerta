@@ -94,7 +94,7 @@ Vagrant.configure("2") do |config|
     #centos7.vm.box = "centos71"
     #centos7.vm.box_url = "https://github.com/CommanderK5/packer-centos-template/releases/download/0.7.1/vagrant-centos-7.1.box"
     centos7.vm.box = "centos/7"
-    centos7.vm.box_url = "https://atlas.hashicorp.com/centos/boxes/7/versions/1605.01/providers/virtualbox.box"
+    centos7.vm.box_url = "https://atlas.hashicorp.com/centos/boxes/7/versions/1704.01/providers/virtualbox.box"
     centos7.vm.network :private_network, ip: "192.168.0.110"
     centos7.vm.provision :shell, :path => "scripts/centos/base.sh"
     centos7.vm.provision :shell, :path => "scripts/centos/alerta.sh"
