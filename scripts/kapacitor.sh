@@ -5,7 +5,7 @@ set -x
 API_KEY=demo-key
 
 curl -sL https://repos.influxdata.com/influxdb.key | apt-key add -
-echo "deb https://repos.influxdata.com/ubuntu wily stable" | tee /etc/apt/sources.list.d/influxdb.list
+echo "deb https://repos.influxdata.com/ubuntu xenial stable" | tee /etc/apt/sources.list.d/influxdb.list
 apt-get update
 
 echo "Installing Influxdb..."
@@ -49,7 +49,7 @@ stream
 EOF
 
 systemctl start kapacitor
-kapacitor define -name cpu_alert -tick /etc/kapacitor/cpu_alert.tick -type stream -dbrp telegraf.default
+kapacitor define cpu_alert -tick /etc/kapacitor/cpu_alert.tick -type stream -dbrp telegraf.default
 
 echo "Influxdb  ==> http://192.168.0.107:8086"
 echo "Kapacitor ==> http://192.168.0.107:9092"
