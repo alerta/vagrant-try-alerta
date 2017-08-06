@@ -10,8 +10,10 @@ update-ca-certificates -f
 
 apt-get -y install elasticsearch kibana logstash
 
-systemctl daemon-reload
+echo "-Xms512m" >> /etc/elasticsearch/jvm.options
+echo "-Xmx512m" >> /etc/elasticsearch/jvm.options
 
+systemctl daemon-reload
 systemctl enable elasticsearch.service
 systemctl start elasticsearch.service
 
