@@ -106,5 +106,12 @@ Vagrant.configure("2") do |config|
     zabbix3.vm.provision :shell, :path => "scripts/alerta.sh"
     zabbix3.vm.provision :shell, :path => "scripts/zabbix3.sh"
   end
+
+  config.vm.define "alerta-kibana5" do |kibana5|
+    kibana5.vm.network :private_network, ip: "192.168.0.112"
+    kibana5.vm.provision :shell, :path => "scripts/base.sh"
+    kibana5.vm.provision :shell, :path => "scripts/alerta.sh"
+    kibana5.vm.provision :shell, :path => "scripts/kibana5.sh"
+  end
 end
 
