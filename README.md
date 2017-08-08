@@ -73,6 +73,7 @@ Each vagrant box is configured to use a different IP address:
 | Alerta & Kibana4   | 192.168.0.109 |
 | Alerta on Centos7  | 192.168.0.110 |
 | Alerta & Zabbix3   | 192.168.0.111 |
+| Alerta & Kibana5   | 192.168.0.112 |
 
 To use the web-based console for the Alerta Riemann vagrant box, for example:
 
