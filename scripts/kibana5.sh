@@ -9,20 +9,26 @@ apt-get -y install default-jre
 update-ca-certificates -f
 
 apt-get -y install elasticsearch kibana logstash
-
-echo "-Xms512m" >> /etc/elasticsearch/jvm.options
-echo "-Xmx512m" >> /etc/elasticsearch/jvm.options
-
 systemctl daemon-reload
+
+# elasticsearch
+echo "-Xms512m" >>/etc/elasticsearch/jvm.options
+echo "-Xmx512m" >>/etc/elasticsearch/jvm.options
 systemctl enable elasticsearch.service
 systemctl start elasticsearch.service
 
+# kibana
+echo "server.host: 0.0.0.0" >>/etc/kibana/kibana.yml
 systemctl enable kibana.service
 systemctl start kibana.service
 
+# logstash
 wget -qO /etc/logstash/conf.d/logstash.conf https://raw.githubusercontent.com/alerta/kibana-alerta/master/logstash.conf
 systemctl enable logstash.service
 systemctl start logstash.service
+
+# alerta
+/opt/alerta/bin/pip install git+https://github.com/alerta/alerta-contrib.git#subdirectory=plugins/logstash
 
 cat >>/etc/alertad.conf << EOF
 PLUGINS = ['reject','logstash']
