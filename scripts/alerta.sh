@@ -6,10 +6,7 @@ export AUTH_REQUIRED=False
 
 apt-get -y update
 DEBIAN_FRONTEND=noninteractive apt-get -y install git wget build-essential python python-setuptools python-pip python-dev python-virtualenv libffi-dev
-DEBIAN_FRONTEND=noninteractive apt-get -y install mongodb-server apache2 libapache2-mod-wsgi
-
-grep -q smallfiles /etc/mongodb.conf || echo "smallfiles = true" | tee -a /etc/mongodb.conf
-service mongodb restart
+DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 libapache2-mod-wsgi
 
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
@@ -44,15 +41,13 @@ cat >/var/www/api.wsgi << EOF
 #!/usr/bin/env python
 activate_this = '/opt/alerta/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
-from alerta.app import app as application
+from alerta import app as application
 EOF
 
-cat >/etc/alertad.conf << EOF
-SECRET_KEY = '$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)'
-
-AUTH_REQUIRED = $AUTH_REQUIRED
-
-PLUGINS = ['reject']
+cat >>/etc/alertad.conf << EOF
+SECRET_KEY='$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)'
+AUTH_REQUIRED=$AUTH_REQUIRED
+PLUGINS=['reject', 'blackout']
 EOF
 
 echo "ServerName localhost" >> /etc/apache2/apache2.conf

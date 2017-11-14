@@ -29,6 +29,11 @@ systemctl start logstash.service
 
 # alerta
 /opt/alerta/bin/pip install git+https://github.com/alerta/alerta-contrib.git#subdirectory=plugins/logstash
+/opt/alerta/bin/pip install git+https://github.com/alerta/alerta-contrib.git#subdirectory=integrations/syslog
+/opt/alerta/bin/alerta-syslog &
+
+echo "*.* @127.0.0.1:514" >>/etc/rsyslog.d/50-default.conf
+systemctl restart rsyslog.service
 
 cat >>/etc/alertad.conf << EOF
 PLUGINS = ['reject','logstash']
