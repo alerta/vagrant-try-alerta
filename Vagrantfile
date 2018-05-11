@@ -105,9 +105,9 @@ Vagrant.configure("2") do |config|
     centos7.vm.box = "centos/7"
     centos7.vm.box_url = "https://atlas.hashicorp.com/centos/boxes/7/versions/1704.01/providers/virtualbox.box"
     centos7.vm.network :private_network, ip: "192.168.0.110"
-    centos7.vm.provision :shell, :path => "scripts/centos/base.sh"
-    centos7.vm.provision :shell, :path => "scripts/centos/mongodb.sh"
-    centos7.vm.provision :shell, :path => "scripts/centos/alerta.sh"
+    #centos7.vm.provision :shell, :path => "scripts/centos/base.sh"
+    #centos7.vm.provision :shell, :path => "scripts/centos/mongodb.sh"
+    #centos7.vm.provision :shell, :path => "scripts/centos/alerta.sh"
   end
 
   config.vm.define "alerta-zabbix3" do |zabbix3|
@@ -135,6 +135,12 @@ Vagrant.configure("2") do |config|
     alerta.vm.provision :shell, :path => "scripts/base.sh"
     alerta.vm.provision :shell, :path => "scripts/postgres.sh"
     alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+  end
+
+  config.vm.define "alerta-opensuse", primary: true do |opensuse|
+    opensuse.vm.box = "opensuse/openSUSE-Tumbleweed-x86_64"
+    opensuse.vm.network :private_network, ip: "192.168.0.121"
+    opensuse.vm.provision :shell, :path => "scripts/opensuse/alerta.sh"
   end
 end
 
