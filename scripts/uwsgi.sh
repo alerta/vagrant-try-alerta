@@ -5,16 +5,16 @@ set -x
 export AUTH_REQUIRED=False
 
 apt-get -y update
-DEBIAN_FRONTEND=noninteractive apt-get -y install git wget build-essential python python-setuptools python-pip python-dev python-virtualenv libffi-dev
-DEBIAN_FRONTEND=noninteractive apt-get -y install mongodb-server nginx uwsgi
+DEBIAN_FRONTEND=noninteractive apt-get -y install git wget build-essential python3 python3-setuptools python3-pip python3-dev python3-venv libffi-dev
+DEBIAN_FRONTEND=noninteractive apt-get -y install mongodb-server nginx uwsgi uwsgi-plugin-python3
 
 grep -q smallfiles /etc/mongodb.conf || echo "smallfiles = true" | tee -a /etc/mongodb.conf
 service mongodb restart
 
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
-virtualenv alerta
-alerta/bin/pip install alerta-server
+python3 -m venv alerta
+alerta/bin/pip install --upgrade pip wheel alerta-server alerta
 echo "PATH=$PATH:/opt/alerta/bin" >/etc/profile.d/alerta.sh
 
 cat >/etc/nginx
@@ -74,17 +74,13 @@ http {
 EOF
 
 cat >/var/www/api.wsgi << EOF
-#!/usr/bin/env python
-activate_this = '/opt/alerta/bin/activate_this.py'
-execfile(activate_this, dict(__file__=activate_this))
 from alerta.app import app as application
 EOF
 
 cat >/etc/alertad.conf << EOF
+BASE_URL='/api'
 SECRET_KEY = '$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)'
-
 AUTH_REQUIRED = $AUTH_REQUIRED
-
 PLUGINS = ['reject']
 EOF
 
