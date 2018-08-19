@@ -59,21 +59,24 @@ $ alerta query
 
 Each vagrant box is configured to use a different IP address:
 
-| VM Image           | IP Address    |
-|--------------------|---------------|
-| Alerta only        | 192.168.0.100 |
-| Alerta & Nagios3   | 192.168.0.101 |
-| Alerta & Zabbix    | 192.168.0.102 |
-| Alerta & Riemann   | 192.168.0.103 |
-| Alerta & Sensu     | 192.168.0.104 |
-| Alerta & Kibana3   | 192.168.0.105 |
-| Alerta & Nagios4   | 192.168.0.106 |
-| Alerta & kapacitor | 192.168.0.107 |
-| Alerta (uWsgi)     | 192.168.0.108 |
-| Alerta & Kibana4   | 192.168.0.109 |
-| Alerta on Centos7  | 192.168.0.110 |
-| Alerta & Zabbix3   | 192.168.0.111 |
-| Alerta & Kibana5   | 192.168.0.112 |
+| VM Image           | VirtalBox ID     | IP Address    | Service URL                |
+|--------------------|------------------|---------------|----------------------------|
+| Alerta only        | alerta           | 192.168.0.100 |                            |
+| Alerta & Nagios3   | alerta-nagios3   | 192.168.0.101 |                            |
+| Alerta & Zabbix    | alerta-zabbix2   | 192.168.0.102 |                            |
+| Alerta & Riemann   | alerta-riemann   | 192.168.0.103 |                            |
+| Alerta & Sensu     | alerta-sensu     | 192.168.0.104 |                            |
+| Alerta & Kibana3   | alerta-kibana    | 192.168.0.105 |                            |
+| Alerta & Nagios4   | alerta-nagios4   | 192.168.0.106 |                            |
+| Alerta & kapacitor | alerta-kapacitor | 192.168.0.107 |                            |
+| Alerta (uWsgi)     | alerta-uwsgi     | 192.168.0.108 |                            |
+| Alerta & Kibana4   | alerta-kibana4   | 192.168.0.109 |                            |
+| Alerta on Centos7  | alerta-centos    | 192.168.0.110 |                            |
+| Alerta & Zabbix3   | alerta-zabbix3   | 192.168.0.111 |                            |
+| Alerta & Kibana5   | alerta-kibana5   | 192.168.0.112 |                            |
+| Alerta (Postgres)  | alerta-postgres  | 192.168.0.120 |                            |
+| Alerta on OpenSuse | alerta-opensuse  | 192.168.0.121 |                            |
+| Alerta & Grafana   | alerta-grafana   | 192.168.0.122 | http://192.168.0.121:3000/ |
 
 To use the web-based console for the Alerta Riemann vagrant box, for example:
 
