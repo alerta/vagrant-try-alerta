@@ -142,5 +142,13 @@ Vagrant.configure("2") do |config|
     opensuse.vm.network :private_network, ip: "192.168.0.121"
     opensuse.vm.provision :shell, :path => "scripts/opensuse/alerta.sh"
   end
+
+  config.vm.define "alerta-grafana", primary: true do |grafana|
+    grafana.vm.network :private_network, ip: "192.168.0.122"
+    grafana.vm.provision :shell, :path => "scripts/base.sh"
+    grafana.vm.provision :shell, :path => "scripts/postgres.sh"
+    grafana.vm.provision :shell, :path => "scripts/alerta.sh"
+    grafana.vm.provision :shell, :path => "scripts/grafana.sh"
+  end
 end
 

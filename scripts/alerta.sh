@@ -11,7 +11,8 @@ DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 libapache2-mod-wsgi-py
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
 python3 -m venv alerta
-alerta/bin/pip install --upgrade pip wheel alerta-server alerta
+alerta/bin/pip install --upgrade pip wheel
+alerta/bin/pip install alerta-server alerta
 echo "PATH=$PATH:/opt/alerta/bin" >/etc/profile.d/alerta.sh
 
 cat >/etc/apache2/sites-available/000-default.conf << EOF
