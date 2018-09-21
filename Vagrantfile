@@ -24,9 +24,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "alerta", primary: true do |alerta|
     alerta.vm.network :private_network, ip: "192.168.0.100"
-    alerta.vm.provision :shell, :path => "scripts/base.sh"
-    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
-    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+#    alerta.vm.provision :shell, :path => "scripts/base.sh"
+#    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+#    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
   end
 
   config.vm.define "alerta-nagios3" do |nagios3|
@@ -103,11 +103,16 @@ Vagrant.configure("2") do |config|
     #centos7.vm.box = "centos71"
     #centos7.vm.box_url = "https://github.com/CommanderK5/packer-centos-template/releases/download/0.7.1/vagrant-centos-7.1.box"
     centos7.vm.box = "centos/7"
-    centos7.vm.box_url = "https://atlas.hashicorp.com/centos/boxes/7/versions/1704.01/providers/virtualbox.box"
+    #centos7.vm.box_url = "https://atlas.hashicorp.com/centos/boxes/7/versions/1704.01/providers/virtualbox.box"
     centos7.vm.network :private_network, ip: "192.168.0.110"
-    #centos7.vm.provision :shell, :path => "scripts/centos/base.sh"
+    centos7.vm.provision :shell, :path => "scripts/centos/base.sh"
     #centos7.vm.provision :shell, :path => "scripts/centos/mongodb.sh"
     #centos7.vm.provision :shell, :path => "scripts/centos/alerta.sh"
+  end
+
+  config.vm.define "alerta-amzn2", primary: true do |amzn2|
+    amzn2.vm.box = "winky/amazonlinux-2"
+    amzn2.vm.network :private_network, ip: "192.168.0.123"
   end
 
   config.vm.define "alerta-zabbix3" do |zabbix3|
