@@ -24,9 +24,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "alerta", primary: true do |alerta|
     alerta.vm.network :private_network, ip: "192.168.0.100"
-#    alerta.vm.provision :shell, :path => "scripts/base.sh"
-#    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
-#    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/apache.sh"
   end
 
   config.vm.define "alerta-nagios3" do |nagios3|
@@ -156,4 +157,3 @@ Vagrant.configure("2") do |config|
     grafana.vm.provision :shell, :path => "scripts/grafana.sh"
   end
 end
-

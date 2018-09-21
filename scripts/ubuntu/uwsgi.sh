@@ -1,8 +1,4 @@
-#!/bin/sh -e
-
-set -x
-
-export AUTH_REQUIRED=False
+#!/bin/sh -x
 
 apt-get -y update
 DEBIAN_FRONTEND=noninteractive apt-get -y install git wget build-essential python python-setuptools python-pip python-dev python-virtualenv libffi-dev

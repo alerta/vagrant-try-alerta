@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-set -x
-
 curl https://packagecloud.io/gpg.key | sudo apt-key add -
 echo "deb https://packagecloud.io/grafana/stable/debian/ stretch main" | tee /etc/apt/sources.list.d/grafana.list
 apt-get update
