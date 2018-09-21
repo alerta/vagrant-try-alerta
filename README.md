@@ -59,9 +59,9 @@ $ alerta query
 
 Each vagrant box is configured to use a different IP address:
 
-| VM Image           | VirtalBox ID     | URL            |
-|--------------------|------------------|---------------|----------------------------|
-| Alerta only        | alerta           | http://192.168.0.100                      |
+| VM Image           | VirtalBox ID     | URL                        |
+|--------------------|------------------|----------------------------|
+| Alerta only        | alerta           | http://192.168.0.100       |
 | Alerta & Nagios3   | alerta-nagios3   | 192.168.0.101 |                            |
 | Alerta & Zabbix    | alerta-zabbix2   | 192.168.0.102 |                            |
 | Alerta & Riemann   | alerta-riemann   | 192.168.0.103 |                            |
@@ -93,4 +93,4 @@ http://192.168.0.103:8080/management
 License
 -------
 
-Copyright (c) 2015 Nick Satterly. Available under the MIT License.
+Copyright (c) 2013-2018 Nick Satterly. Available under the MIT License.
