@@ -15,8 +15,11 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "wily64"  # 15.10
   # config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/wily/current/wily-server-cloudimg-amd64-vagrant-disk1.box"
 
-  config.vm.box = "xenial64"  # 16.04
-  config.vm.box_url = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
+  # config.vm.box = "xenial64"  # 16.04
+  # config.vm.box_url = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
+
+  config.vm.box = "bionic64"  # 18.04
+  config.vm.box_url = "https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64-vagrant.box"
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
@@ -30,130 +33,135 @@ Vagrant.configure("2") do |config|
     alerta.vm.provision :shell, :path => "scripts/ubuntu/apache.sh"
   end
 
-  config.vm.define "alerta-nagios3" do |nagios3|
-    nagios3.vm.network :private_network, ip: "192.168.0.101"
-    nagios3.vm.provision :shell, :path => "scripts/base.sh"
-    nagios3.vm.provision :shell, :path => "scripts/mongodb.sh"
-    nagios3.vm.provision :shell, :path => "scripts/alerta.sh"
-    nagios3.vm.provision :shell, :path => "scripts/nagios3.sh"
+  config.vm.define "alerta-postgres", primary: true do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.101"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/postgres.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/apache.sh"
   end
 
-  config.vm.define "alerta-zabbix2" do |zabbix2|
-    zabbix2.vm.network :private_network, ip: "192.168.0.102"
-    zabbix2.vm.provision :shell, :path => "scripts/base.sh"
-    zabbix2.vm.provision :shell, :path => "scripts/mongodb.sh"
-    zabbix2.vm.provision :shell, :path => "scripts/alerta.sh"
-    zabbix2.vm.provision :shell, :path => "scripts/zabbix2.sh"
+  config.vm.define "alerta-nginx", primary: true do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.102"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/postgres.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/nginx.sh"
   end
 
-  config.vm.define "alerta-riemann" do |riemann|
-    riemann.vm.network :private_network, ip: "192.168.0.103"
-    riemann.vm.provision :shell, :path => "scripts/base.sh"
-    riemann.vm.provision :shell, :path => "scripts/mongodb.sh"
-    riemann.vm.provision :shell, :path => "scripts/alerta.sh"
-    riemann.vm.provision :shell, :path => "scripts/riemann.sh"
+  config.vm.define "alerta-centos", primary: true do |alerta|
+    #alerta.vm.box = "centos71"
+    #alerta.vm.box_url = "https://github.com/CommanderK5/packer-centos-template/releases/download/0.7.1/vagrant-centos-7.1.box"
+    alerta.vm.box = "centos/7"
+    #alerta.vm.box_url = "https://atlas.hashicorp.com/centos/boxes/7/versions/1704.01/providers/virtualbox.box"
+    alerta.vm.network :private_network, ip: "192.168.0.103"
+    alerta.vm.provision :shell, :path => "scripts/centos/base.sh"
+    #alerta.vm.provision :shell, :path => "scripts/centos/mongodb.sh"
+    #alerta.vm.provision :shell, :path => "scripts/centos/alerta.sh"
   end
 
-  config.vm.define "alerta-sensu" do |sensu|
-    sensu.vm.network :private_network, ip: "192.168.0.104"
-    sensu.vm.provision :shell, :path => "scripts/base.sh"
-    sensu.vm.provision :shell, :path => "scripts/mongodb.sh"
-    sensu.vm.provision :shell, :path => "scripts/alerta.sh"
-    sensu.vm.provision :shell, :path => "scripts/sensu.sh"
+  config.vm.define "alerta-amzn2", primary: true do |alerta|
+    alerta.vm.box = "winky/amazonlinux-2"
+    alerta.vm.network :private_network, ip: "192.168.0.104"
   end
 
-  config.vm.define "alerta-kibana" do |kibana|
-    kibana.vm.network :private_network, ip: "192.168.0.105"
-    kibana.vm.provision :shell, :path => "scripts/base.sh"
-    kibana.vm.provision :shell, :path => "scripts/mongodb.sh"
-    kibana.vm.provision :shell, :path => "scripts/alerta.sh"
-    kibana.vm.provision :shell, :path => "scripts/kibana.sh"
+  config.vm.define "alerta-opensuse", primary: true do |alerta|
+    alerta.vm.box = "opensuse/openSUSE-Tumbleweed-x86_64"
+    alerta.vm.network :private_network, ip: "192.168.0.105"
+    alerta.vm.provision :shell, :path => "scripts/opensuse/alerta.sh"
   end
 
-  config.vm.define "alerta-nagios4" do |nagios4|
-    nagios4.vm.network :private_network, ip: "192.168.0.106"
-    nagios4.vm.provision :shell, :path => "scripts/base.sh"
-    nagios4.vm.provision :shell, :path => "scripts/mongodb.sh"
-    nagios4.vm.provision :shell, :path => "scripts/alerta.sh"
-    nagios4.vm.provision :shell, :path => "scripts/nagios4.sh"
+  # ##################################################################
+
+  config.vm.define "alerta-nagios3" do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.101"
+    alerta.vm.provision :shell, :path => "scripts/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/nagios3.sh"
   end
 
-  config.vm.define "alerta-kapacitor" do |kapacitor|
-    kapacitor.vm.network :private_network, ip: "192.168.0.107"
-    kapacitor.vm.provision :shell, :path => "scripts/base.sh"
-    kapacitor.vm.provision :shell, :path => "scripts/mongodb.sh"
-    kapacitor.vm.provision :shell, :path => "scripts/alerta.sh"
-    kapacitor.vm.provision :shell, :path => "scripts/kapacitor.sh"
+  config.vm.define "alerta-nagios4" do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.106"
+    alerta.vm.provision :shell, :path => "scripts/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/nagios4.sh"
   end
 
-  config.vm.define "alerta-uwsgi" do |uwsgi|
-    uwsgi.vm.network :private_network, ip: "192.168.0.108"
-    uwsgi.vm.provision :shell, :path => "scripts/base.sh"
-    uwsgi.vm.provision :shell, :path => "scripts/uwsgi.sh"
+  config.vm.define "alerta-zabbix2" do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.102"
+    alerta.vm.provision :shell, :path => "scripts/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/zabbix2.sh"
   end
 
-  config.vm.define "alerta-kibana4" do |kibana4|
-    kibana4.vm.network :private_network, ip: "192.168.0.109"
-    kibana4.vm.provision :shell, :path => "scripts/base.sh"
-    kibana4.vm.provision :shell, :path => "scripts/mongodb.sh"
-    kibana4.vm.provision :shell, :path => "scripts/alerta.sh"
-    kibana4.vm.provision :shell, :path => "scripts/kibana4.sh"
+  config.vm.define "alerta-zabbix3" do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.111"
+    alerta.vm.provision :shell, :path => "scripts/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/zabbix3.sh"
   end
 
-  config.vm.define "alerta-centos", primary: true do |centos7|
-    #centos7.vm.box = "centos71"
-    #centos7.vm.box_url = "https://github.com/CommanderK5/packer-centos-template/releases/download/0.7.1/vagrant-centos-7.1.box"
-    centos7.vm.box = "centos/7"
-    #centos7.vm.box_url = "https://atlas.hashicorp.com/centos/boxes/7/versions/1704.01/providers/virtualbox.box"
-    centos7.vm.network :private_network, ip: "192.168.0.110"
-    centos7.vm.provision :shell, :path => "scripts/centos/base.sh"
-    #centos7.vm.provision :shell, :path => "scripts/centos/mongodb.sh"
-    #centos7.vm.provision :shell, :path => "scripts/centos/alerta.sh"
+  config.vm.define "alerta-riemann" do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.103"
+    alerta.vm.provision :shell, :path => "scripts/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/riemann.sh"
   end
 
-  config.vm.define "alerta-amzn2", primary: true do |amzn2|
-    amzn2.vm.box = "winky/amazonlinux-2"
-    amzn2.vm.network :private_network, ip: "192.168.0.123"
+  config.vm.define "alerta-sensu" do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.104"
+    alerta.vm.provision :shell, :path => "scripts/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/sensu.sh"
   end
 
-  config.vm.define "alerta-zabbix3" do |zabbix3|
-    zabbix3.vm.network :private_network, ip: "192.168.0.111"
-    zabbix3.vm.provision :shell, :path => "scripts/base.sh"
-    zabbix3.vm.provision :shell, :path => "scripts/mongodb.sh"
-    zabbix3.vm.provision :shell, :path => "scripts/alerta.sh"
-    zabbix3.vm.provision :shell, :path => "scripts/zabbix3.sh"
+  config.vm.define "alerta-kibana3" do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.105"
+    alerta.vm.provision :shell, :path => "scripts/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/kibana.sh"
   end
 
-  config.vm.define "alerta-kibana5" do |kibana5|
-    kibana5.vm.provider :virtualbox do |v|
+  config.vm.define "alerta-kibana4" do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.109"
+    alerta.vm.provision :shell, :path => "scripts/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/kibana4.sh"
+  end
+
+  config.vm.define "alerta-kibana5" do |alerta|
+    alerta.vm.provider :virtualbox do |v|
       v.memory = 2048
       v.cpus = 2
     end
-    kibana5.vm.network :private_network, ip: "192.168.0.112"
-    kibana5.vm.provision :shell, :path => "scripts/base.sh"
-    kibana5.vm.provision :shell, :path => "scripts/mongodb.sh"
-    kibana5.vm.provision :shell, :path => "scripts/alerta.sh"
-    kibana5.vm.provision :shell, :path => "scripts/kibana5.sh"
+    alerta.vm.network :private_network, ip: "192.168.0.112"
+    alerta.vm.provision :shell, :path => "scripts/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/kibana5.sh"
   end
 
-  config.vm.define "alerta-postgres", primary: true do |alerta|
-    alerta.vm.network :private_network, ip: "192.168.0.120"
+  config.vm.define "alerta-kapacitor" do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.107"
+    alerta.vm.provision :shell, :path => "scripts/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/kapacitor.sh"
+  end
+
+  config.vm.define "alerta-grafana", primary: true do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.122"
     alerta.vm.provision :shell, :path => "scripts/base.sh"
     alerta.vm.provision :shell, :path => "scripts/postgres.sh"
     alerta.vm.provision :shell, :path => "scripts/alerta.sh"
-  end
-
-  config.vm.define "alerta-opensuse", primary: true do |opensuse|
-    opensuse.vm.box = "opensuse/openSUSE-Tumbleweed-x86_64"
-    opensuse.vm.network :private_network, ip: "192.168.0.121"
-    opensuse.vm.provision :shell, :path => "scripts/opensuse/alerta.sh"
-  end
-
-  config.vm.define "alerta-grafana", primary: true do |grafana|
-    grafana.vm.network :private_network, ip: "192.168.0.122"
-    grafana.vm.provision :shell, :path => "scripts/base.sh"
-    grafana.vm.provision :shell, :path => "scripts/postgres.sh"
-    grafana.vm.provision :shell, :path => "scripts/alerta.sh"
-    grafana.vm.provision :shell, :path => "scripts/grafana.sh"
+    alerta.vm.provision :shell, :path => "scripts/grafana.sh"
   end
 end

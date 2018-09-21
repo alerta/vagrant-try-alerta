@@ -21,18 +21,18 @@ Listen 8080
 <VirtualHost *:80>
   ProxyPass /api http://localhost:8080
   ProxyPassReverse /api http://localhost:8080
-  DocumentRoot /var/www/alerta/app
+  DocumentRoot /var/www/html
 </VirtualHost>
 EOF
 
-cd /var/www
+cd /var/www/html
 wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar zxf -
-mv alerta-* alerta
+mv alerta*/app/* .
 
-cat >/var/www/alerta/app/config.json <<EOF
+cat >/var/www/html/config.json <<EOF
 {"endpoint": "/api"}
 EOF
 
 echo "ServerName localhost" >> /etc/apache2/apache2.conf
 a2enmod proxy_http
-service apache2 reload
+apachectl restart
