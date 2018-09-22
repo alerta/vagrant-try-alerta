@@ -49,20 +49,25 @@ Vagrant.configure("2") do |config|
     alerta.vm.provision :shell, :path => "scripts/ubuntu/nginx.sh"
   end
 
-  config.vm.define "alerta-centos", primary: true do |alerta|
+  config.vm.define "alerta-centos7", primary: true do |alerta|
     #alerta.vm.box = "centos71"
     #alerta.vm.box_url = "https://github.com/CommanderK5/packer-centos-template/releases/download/0.7.1/vagrant-centos-7.1.box"
     alerta.vm.box = "centos/7"
     #alerta.vm.box_url = "https://atlas.hashicorp.com/centos/boxes/7/versions/1704.01/providers/virtualbox.box"
     alerta.vm.network :private_network, ip: "192.168.0.103"
     alerta.vm.provision :shell, :path => "scripts/centos/base.sh"
-    #alerta.vm.provision :shell, :path => "scripts/centos/mongodb.sh"
-    #alerta.vm.provision :shell, :path => "scripts/centos/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/centos/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/centos/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/centos/apache.sh"
   end
 
   config.vm.define "alerta-amzn2", primary: true do |alerta|
     alerta.vm.box = "winky/amazonlinux-2"
     alerta.vm.network :private_network, ip: "192.168.0.104"
+    alerta.vm.provision :shell, :path => "scripts/centos/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/centos/mongodb.sh"
+    alerta.vm.provision :shell, :path => "scripts/centos/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/centos/apache.sh"
   end
 
   config.vm.define "alerta-opensuse", primary: true do |alerta|

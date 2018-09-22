@@ -2,13 +2,21 @@
 
 VENV_ROOT=/opt/alerta
 
-DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 libapache2-mod-wsgi-py3
+yum -y install httpd httpd-devel
+/opt/alerta/bin/pip install mod-wsgi
+mod_wsgi-express install-module > /etc/httpd/conf.modules.d/02-wsgi.conf
+/usr/sbin/setsebool -P httpd_can_network_connect 1
 
 cat >/var/www/wsgi.py << EOF
-from alerta import app as application
+import os
+
+def application(environ, start_response):
+    os.environ['BASE_URL'] = environ.get('BASE_URL', '')
+    from alerta import app as _application
+    return _application(environ, start_response)
 EOF
 
-cat >/etc/apache2/sites-available/000-default.conf << EOF
+cat >/etc/httpd/conf.d/default.conf << EOF
 Listen 8080
 <VirtualHost *:8080>
   ServerName localhost
@@ -17,6 +25,7 @@ Listen 8080
   # WSGIApplicationGroup %{GLOBAL}
   WSGIScriptAlias / /var/www/wsgi.py
   WSGIPassAuthorization On
+  SetEnv BASE_URL /api
 </VirtualHost>
 <VirtualHost *:80>
   ProxyPass /api http://localhost:8080
@@ -33,6 +42,6 @@ cat >/var/www/html/config.json <<EOF
 {"endpoint": "/api"}
 EOF
 
-echo "ServerName localhost" >> /etc/apache2/apache2.conf
-a2enmod proxy_http
-apachectl restart
+echo "ServerName localhost" >> /etc/httpd/conf.d/servername.conf
+
+systemctl restart httpd

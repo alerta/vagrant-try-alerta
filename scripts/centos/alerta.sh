@@ -1,78 +1,29 @@
 #!/bin/sh -e
 
-set -x
-
-export AUTH_REQUIRED=False
-
-yum -y install gcc python-pip python-devel python-setuptools python-virtualenv libffi-devel openssl-devel
-yum -y install httpd mod_wsgi mongodb-server
-pip install --upgrade pip setuptools wheel virtualenv
-
-grep -q ^smallfiles /etc/mongod.conf || echo "smallfiles = true" | tee -a /etc/mongod.conf
-/usr/sbin/setsebool -P httpd_can_network_connect 1  # change SELinux policy to allow httpd modules to connect to databases over the network
-systemctl start mongod
-systemctl enable mongod
+yum -y install python36 python36-pip python36-devel python36-setuptools python36-venv libffi-devel
 
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
-virtualenv alerta
-alerta/bin/pip install alerta-server
-echo "PATH=$PATH:/opt/alerta/bin" >/etc/profile.d/alerta.sh
+python36 -m venv alerta
+alerta/bin/pip install --upgrade pip wheel
+alerta/bin/pip install alerta-server alerta
 
-cat >/etc/httpd/conf.d/default.conf << EOF
-Listen 8080
-<VirtualHost *:8080>
-  ServerName localhost
-  WSGIDaemonProcess alerta processes=5 threads=5
-  WSGIProcessGroup alerta
-  WSGIApplicationGroup %{GLOBAL}
-  WSGIScriptAlias / /var/www/api.wsgi
-  WSGIPassAuthorization On
-  <Directory /opt/alerta>
-    Require all granted
-  </Directory>
-</VirtualHost>
-<VirtualHost *:80>
-  ProxyPass /api http://localhost:8080
-  ProxyPassReverse /api http://localhost:8080
-  DocumentRoot /var/www/html
-  <Directory /var/www/html>
-    Require all granted
-  </Directory>
-</VirtualHost>
+cat >>/etc/profile.d/alerta.sh <<EOF
+PATH=$PATH:/opt/alerta/bin
 EOF
 
-cat >/var/www/api.wsgi << EOF
-#!/usr/bin/env python
-activate_this = '/opt/alerta/bin/activate_this.py'
-execfile(activate_this, dict(__file__=activate_this))
-from alerta.app import app as application
+cat >/etc/alertad.conf <<EOF
+DEBUG=True
+TESTING=True
+SECRET_KEY='$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)'
+PLUGINS=['reject', 'blackout']
+DATABASE_URL='${DATABASE_URL}'
+JSON_AS_ASCII=False
+JSON_SORT_KEYS=True
+JSONIFY_PRETTYPRINT_REGULAR=True
 EOF
 
-cat >/etc/alertad.conf << EOF
-SECRET_KEY = '$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)'
-
-AUTH_REQUIRED = $AUTH_REQUIRED
-
-PLUGINS = ['reject']
+cat >$HOME/.alerta.conf <<EOF
+[DEFAULT]
+endpoint = http://localhost/api
 EOF
-
-echo "ServerName localhost" >>/etc/httpd/conf/httpd.conf
-systemctl start httpd
-systemctl enable httpd
-
-cd /var/www && rm -Rf html/*
-wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar zxf -
-mv alerta-angular-alerta-webui-*/app/* html
-rm -Rf alerta-angular-alerta-webui-*
-
-cat >/var/www/html/config.js << EOF
-'use strict';
-angular.module('config', [])
-  .constant('config', {
-    'endpoint'    : "/api",
-    'provider'    : "basic"
-  })
-  .constant('colors', {});
-EOF
-
