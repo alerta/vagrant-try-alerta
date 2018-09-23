@@ -21,7 +21,7 @@ apt-get install kapacitor
 
 echo "Configuring Kapacitor..."
 sed -i s/alerta/alerta-default/ /etc/kapacitor/kapacitor.conf
-cat >>/etc/kapacitor/kapacitor.conf << EOF
+cat >>/etc/kapacitor/kapacitor.conf <<EOF
 [alerta]
   enabled = true
   url = "http://localhost:8080"
@@ -30,7 +30,7 @@ cat >>/etc/kapacitor/kapacitor.conf << EOF
   origin = "kapacitor/$HOSTNAME"
 EOF
 
-cat >/etc/kapacitor/cpu_alert.tick << EOF
+cat >/etc/kapacitor/cpu_alert.tick <<EOF
 stream
     |from()
         .measurement('cpu')

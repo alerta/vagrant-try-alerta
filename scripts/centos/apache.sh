@@ -1,5 +1,6 @@
 #!/bin/sh -x
 
+BASE_URL=/api
 VENV_ROOT=/opt/alerta
 
 yum -y install httpd httpd-devel
@@ -7,7 +8,7 @@ yum -y install httpd httpd-devel
 mod_wsgi-express install-module > /etc/httpd/conf.modules.d/02-wsgi.conf
 /usr/sbin/setsebool -P httpd_can_network_connect 1
 
-cat >/var/www/wsgi.py << EOF
+cat >/var/www/wsgi.py <<EOF
 import os
 
 def application(environ, start_response):
@@ -16,7 +17,7 @@ def application(environ, start_response):
     return _application(environ, start_response)
 EOF
 
-cat >/etc/httpd/conf.d/default.conf << EOF
+cat >/etc/httpd/conf.d/default.conf <<EOF
 Listen 8080
 <VirtualHost *:8080>
   ServerName localhost
@@ -25,11 +26,11 @@ Listen 8080
   # WSGIApplicationGroup %{GLOBAL}
   WSGIScriptAlias / /var/www/wsgi.py
   WSGIPassAuthorization On
-  SetEnv BASE_URL /api
+  SetEnv BASE_URL ${BASE_URL}
 </VirtualHost>
 <VirtualHost *:80>
-  ProxyPass /api http://localhost:8080
-  ProxyPassReverse /api http://localhost:8080
+  ProxyPass ${BASE_URL} http://localhost:8080
+  ProxyPassReverse ${BASE_URL} http://localhost:8080
   DocumentRoot /var/www/html
 </VirtualHost>
 EOF
@@ -39,7 +40,7 @@ wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar
 mv alerta*/app/* .
 
 cat >/var/www/html/config.json <<EOF
-{"endpoint": "/api"}
+{"endpoint": "${BASE_URL}"}
 EOF
 
 echo "ServerName localhost" >> /etc/httpd/conf.d/servername.conf

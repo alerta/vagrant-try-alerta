@@ -10,7 +10,7 @@ apt-get -y install ruby ruby-dev logstash openjdk-8-jre-headless openjdk-8-jdk e
 update-ca-certificates -f
 
 /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head
-cat >>/etc/elasticsearch/elasticsearch.yml << EOF
+cat >>/etc/elasticsearch/elasticsearch.yml <<EOF
 cluster.name: alerta
 EOF
 service elasticsearch start
@@ -24,10 +24,9 @@ mv /opt/kibana-* /opt/kibana
 wget -qO /etc/logstash/conf.d/logstash.conf https://raw.githubusercontent.com/alerta/kibana-alerta/master/logstash.conf
 service logstash start
 
-cat >>/etc/alertad.conf << EOF
+cat >>/etc/alertad.conf <<EOF
 PLUGINS = ['reject','logstash']
 LOGSTASH_HOST = 'localhost'
 LOGSTASH_PORT = 1514
 EOF
 apachectl restart
-

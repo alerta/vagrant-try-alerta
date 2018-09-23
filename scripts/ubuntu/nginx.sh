@@ -1,5 +1,7 @@
 #!/bin/sh -x
 
+BASE_URL=/api
+
 DEBIAN_FRONTEND=noninteractive apt-get -y install nginx
 /opt/alerta/bin/pip install uwsgi
 
@@ -10,10 +12,10 @@ EOF
 cat >/etc/uwsgi.ini <<EOF
 [uwsgi]
 chdir = /var/www
-mount = /api=wsgi.py
+mount = ${BASE_URL}=wsgi.py
 callable = app
 manage-script-name = true
-env = BASE_URL=/api
+env = BASE_URL=${BASE_URL}
 
 master = true
 processes = 5
@@ -41,32 +43,32 @@ EOF
 
 service uwsgi restart
 
-cat >/etc/nginx/sites-enabled/default <<'HERE'
+cat >/etc/nginx/sites-enabled/default <<EOF
 server {
         listen 80 default_server;
         listen [::]:80 default_server;
 
-        location /api { try_files $uri @api; }
+        location ${BASE_URL} { try_files \$uri @api; }
         location @api {
             include uwsgi_params;
             uwsgi_pass unix:/tmp/uwsgi.sock;
-            proxy_set_header Host $host:$server_port;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host \$host:\$server_port;
+            proxy_set_header X-Real-IP \$remote_addr;
+            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
 
         location / {
                 root /var/www/html;
         }
 }
-HERE
+EOF
 
 cd /var/www/html
 wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar zxf -
 mv alerta*/app/* .
 
 cat >/var/www/html/config.json <<EOF
-{"endpoint": "/api"}
+{"endpoint": "${BASE_URL}"}
 EOF
 
 service nginx restart

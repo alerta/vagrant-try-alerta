@@ -7,7 +7,7 @@ wget -qO logstash.deb https://download.elastic.co/logstash/logstash/packages/deb
 wget -qO elasticsearch.deb https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.0.0/elasticsearch-2.0.0.deb && dpkg -i elasticsearch.deb
 
 /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head
-cat >>/etc/elasticsearch/elasticsearch.yml << EOF
+cat >>/etc/elasticsearch/elasticsearch.yml <<EOF
 cluster.name: alerta
 EOF
 service elasticsearch start
@@ -20,7 +20,7 @@ ln -s kibana-* kibana4
 wget -qO /etc/logstash/conf.d/logstash.conf https://raw.githubusercontent.com/alerta/kibana-alerta/master/logstash.conf
 service logstash start
 
-cat >>/etc/alertad.conf << EOF
+cat >>/etc/alertad.conf <<EOF
 PLUGINS = ['reject','logstash']
 LOGSTASH_HOST = 'localhost'
 LOGSTASH_PORT = 1514

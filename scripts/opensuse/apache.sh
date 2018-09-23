@@ -1,11 +1,11 @@
-#!/bin/sh -x
+#!/usr/bin/env bash
 
 BASE_URL=/api
 VENV_ROOT=/opt/alerta
 
-DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 libapache2-mod-wsgi-py3
+zypper --non-interactive install apache2 apache2-mod_wsgi-python3
 
-cat >/var/www/wsgi.py <<EOF
+cat >/srv/www/wsgi.py <<EOF
 import os
 
 def application(environ, start_response):
@@ -14,32 +14,40 @@ def application(environ, start_response):
     return _application(environ, start_response)
 EOF
 
-cat >/etc/apache2/sites-available/000-default.conf <<EOF
+cat >/etc/apache2/conf.d/default.conf <<EOF
 Listen 8080
 <VirtualHost *:8080>
   ServerName localhost
   WSGIDaemonProcess alerta processes=5 threads=5 python-home=${VENV_ROOT}
   WSGIProcessGroup alerta
   # WSGIApplicationGroup %{GLOBAL}
-  WSGIScriptAlias / /var/www/wsgi.py
+  WSGIScriptAlias / /srv/www/wsgi.py
   WSGIPassAuthorization On
   SetEnv BASE_URL ${BASE_URL}
+  <Directory /srv/www>
+    Require all granted
+  </Directory>
 </VirtualHost>
 <VirtualHost *:80>
   ProxyPass ${BASE_URL} http://localhost:8080
   ProxyPassReverse ${BASE_URL} http://localhost:8080
-  DocumentRoot /var/www/html
+  DocumentRoot /srv/www/htdocs
 </VirtualHost>
 EOF
 
-cd /var/www/html
+cd /srv/www/htdocs
 wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar zxf -
 mv alerta*/app/* .
 
-cat >/var/www/html/config.json <<EOF
+cat >/srv/www/htdocs/config.json <<EOF
 {"endpoint": "${BASE_URL}"}
 EOF
 
-echo "ServerName localhost" >> /etc/apache2/apache2.conf
+cat >/etc/apache2/conf.d/servername.conf <<EOF
+ServerName localhost
+EOF
+
+a2enmod proxy
 a2enmod proxy_http
-apachectl restart
+systemctl restart apache2
+systemctl enable apache2

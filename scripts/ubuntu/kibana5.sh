@@ -35,11 +35,10 @@ systemctl start logstash.service
 echo "*.* @127.0.0.1:514" >>/etc/rsyslog.d/50-default.conf
 systemctl restart rsyslog.service
 
-cat >>/etc/alertad.conf << EOF
+cat >>/etc/alertad.conf <<EOF
 PLUGINS = ['reject','logstash']
 LOGSTASH_HOST = 'localhost'
 LOGSTASH_PORT = 1514
 EOF
 
 apachectl restart
-
