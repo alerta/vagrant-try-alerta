@@ -10,9 +10,6 @@ useradd nagios
 groupadd nagcmd
 usermod -a -G nagcmd nagios
 
-# install dependencies
-DEBIAN_FRONTEND=noninteractive apt-get -y install libcurl4-openssl-dev libjansson-dev php libapache2-mod-php
-
 # download source
 cd $HOME
 wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-${NAGIOS_CORE_VERSION}.tar.gz
@@ -28,6 +25,7 @@ make install-init
 make install-config
 
 # install web interface
+DEBIAN_FRONTEND=noninteractive apt-get -y install php libapache2-mod-php
 /usr/bin/install -c -m 644 sample-config/httpd.conf /etc/apache2/sites-available/nagios.conf
 ln -s /etc/apache2/sites-available/nagios.conf /etc/apache2/sites-enabled/
 usermod -G nagcmd www-data
@@ -47,6 +45,7 @@ make all
 make install
 
 # install nagios-alerta NEB
+DEBIAN_FRONTEND=noninteractive apt-get -y install libcurl4-openssl-dev libjansson-dev
 cd $HOME
 git clone https://github.com/alerta/nagios-alerta.git
 cd nagios-alerta

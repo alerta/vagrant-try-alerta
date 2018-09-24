@@ -42,7 +42,8 @@ Each vagrant box is configured to use a different IP address.
 
 | VM Image           | VirtalBox ID     | URLs |
 |--------------------|------------------|------|
-| Alerta & Nagios4   | alerta-nagios4   | http://192.168.0.1111 http://192.168.0.111/nagios |
+| Alerta & Nagios3   | alerta-nagios3   | http://192.168.0.110 http://192.168.0.110/nagios3 |
+| Alerta & Nagios4   | alerta-nagios4   | http://192.168.0.111 http://192.168.0.111/nagios |
 
 | Alerta & Nagios3   | alerta-nagios3   | 192.168.0.101 |                            |
 | Alerta & Zabbix    | alerta-zabbix2   | 192.168.0.102 |                            |
