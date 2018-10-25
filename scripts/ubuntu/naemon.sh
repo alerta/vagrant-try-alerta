@@ -35,7 +35,7 @@ DEBIAN_FRONTEND=noninteractive apt-get -y install libcurl4-openssl-dev libjansso
 cd $HOME
 git clone https://github.com/alerta/nagios-alerta.git
 cd nagios-alerta
-make neamon && make install
+make naemon && make install
 
 echo "broker_module=/usr/lib/nagios/alerta-neb.o http://localhost:8080 debug=1" | tee -a /etc/naemon/naemon.cfg
 
