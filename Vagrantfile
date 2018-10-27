@@ -190,4 +190,13 @@ Vagrant.configure("2") do |config|
     alerta.vm.provision :shell, :path => "scripts/ubuntu/apache.sh"
     alerta.vm.provision :shell, :path => "scripts/ubuntu/grafana.sh"
   end
+
+  config.vm.define "alerta-opennms", primary: true do |alerta|
+    alerta.vm.network :private_network, ip: "192.168.0.121"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/base.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/postgres.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/alerta.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/apache.sh"
+    alerta.vm.provision :shell, :path => "scripts/ubuntu/opennms.sh"
+  end
 end
