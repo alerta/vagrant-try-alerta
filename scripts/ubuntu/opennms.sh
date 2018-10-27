@@ -2,7 +2,7 @@ echo "127.0.0.1 server.opennms.local server" >>/etc/hosts
 
 echo "server.opennms.local" >/etc/hostname
 
-cat >>/etc/postgresql/9.6/main/pg_hba.conf <<EOF
+cat >/etc/postgresql/9.5/main/pg_hba.conf <<EOF
 
 local   all         all                                          trust
 host    all         all         127.0.0.1/32                     trust
@@ -32,15 +32,15 @@ debconf-set-selections <<< "postfix postfix/main_mailer_type select Local only"
 debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
 
 apt-get update -y
-apt-get install default-mta opennms -y
+SKIP_IPLIKE_INSTALL=1 apt-get install default-mta opennms -y
 
 /usr/share/opennms/bin/install -dis
 
 systemctl start opennms
 
-ufw enable
+ufw --force enable
 ufw allow 8980
 ufw status
 
-echo "http://192.168.0.187:8980/opennms"
+echo "http://192.168.0.121:8980/opennms"
 echo "admin/admin"
