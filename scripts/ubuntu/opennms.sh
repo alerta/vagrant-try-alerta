@@ -38,9 +38,6 @@ SKIP_IPLIKE_INSTALL=1 apt-get install default-mta opennms -y
 
 pip install git+https://github.com/alerta/alerta-contrib.git#subdirectory=integrations/syslog
 
-export SYSLOG_TCP_PORT=1514
-export SYSLOG_UDP_PORT=1514
-
 cat >/etc/systemd/system/alerta-syslog.service <<EOF
 [Unit]
 Description=Alerta Syslog Listener
@@ -74,7 +71,7 @@ cat >/etc/opennms/syslog-northbounder-configuration.xml <<EOF
    <destination>
       <destination-name>localTest</destination-name>
       <host>127.0.0.1</host>
-      <port>1514</port>
+      <port>514</port>
       <ip-protocol>UDP</ip-protocol>
       <facility>LOCAL0</facility>
       <max-message-length>1024</max-message-length>
