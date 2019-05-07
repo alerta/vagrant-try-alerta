@@ -15,11 +15,11 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "wily64"  # 15.10
   # config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/wily/current/wily-server-cloudimg-amd64-vagrant-disk1.box"
 
-  config.vm.box = "xenial64"  # 16.04
-  config.vm.box_url = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
+  # config.vm.box = "xenial64"  # 16.04
+  # config.vm.box_url = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
 
-  # config.vm.box = "bionic64"  # 18.04
-  # config.vm.box_url = "https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64-vagrant.box"
+  config.vm.box = "bionic64"  # 18.04
+  config.vm.box_url = "https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64-vagrant.box"
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
@@ -77,8 +77,6 @@ Vagrant.configure("2") do |config|
     alerta.vm.provision :shell, :path => "scripts/opensuse/apache.sh"
   end
 
-  # ##################################################################
-
   config.vm.define "alerta-nagios3" do |alerta|
     alerta.vm.network :private_network, ip: "192.168.0.110"
     alerta.vm.provision :shell, :path => "scripts/ubuntu/base.sh"
@@ -87,6 +85,8 @@ Vagrant.configure("2") do |config|
     alerta.vm.provision :shell, :path => "scripts/ubuntu/apache.sh"
     alerta.vm.provision :shell, :path => "scripts/ubuntu/nagios3.sh"
   end
+
+  # ##################################################################
 
   config.vm.define "alerta-nagios4" do |alerta|
     alerta.vm.network :private_network, ip: "192.168.0.111"

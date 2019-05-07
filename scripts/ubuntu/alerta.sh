@@ -6,8 +6,13 @@ DEBIAN_FRONTEND=noninteractive apt-get -y install python3 python3-pip python3-de
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
 python3 -m venv alerta
-alerta/bin/pip install --upgrade pip wheel
-alerta/bin/pip install alerta-server alerta
+/opt/alerta/bin/pip install --upgrade pip wheel
+
+if echo $DATABASE_URL | grep -q postgres; then
+  /opt/alerta/bin/pip install alerta-server[postgres] alerta
+else
+  /opt/alerta/bin/pip install alerta-server alerta
+fi
 
 cat >>/etc/profile.d/alerta.sh <<EOF
 PATH=$PATH:/opt/alerta/bin
