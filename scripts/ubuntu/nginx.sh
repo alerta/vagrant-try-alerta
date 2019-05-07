@@ -57,17 +57,19 @@ server {
             proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
 
+        root   /usr/share/nginx/html;
+
         location / {
-                root /var/www/html;
+            try_files $uri $uri/ /index.html;
         }
 }
 EOF
 
-cd /var/www/html
-wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar zxf -
-mv alerta*/app/* .
+cd /tmp
+wget -q -O - https://github.com/alerta/alerta-webui/releases/latest/download/alerta-webui.tar.gz | tar zxf -
+cp /tmp/dist /usr/share/nginx/html
 
-cat >/var/www/html/config.json <<EOF
+cat >/usr/share/nginx/html/config.json <<EOF
 {"endpoint": "${BASE_URL}"}
 EOF
 
