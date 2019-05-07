@@ -5,8 +5,13 @@ yum -y install python36 python36-pip python36-devel python36-setuptools python36
 id alerta || (groupadd alerta && useradd -g alerta alerta)
 cd /opt
 python36 -m venv alerta
-alerta/bin/pip install --upgrade pip wheel
-alerta/bin/pip install alerta-server alerta
+/opt/alerta/bin/pip install --upgrade pip wheel
+
+if echo $DATABASE_URL | grep -q postgres; then
+  /opt/alerta/bin/pip install alerta-server[postgres] alerta
+else
+  /opt/alerta/bin/pip install alerta-server alerta
+fi
 
 cat >>/etc/profile.d/alerta.sh <<EOF
 PATH=$PATH:/opt/alerta/bin

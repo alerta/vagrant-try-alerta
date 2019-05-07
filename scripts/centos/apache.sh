@@ -35,9 +35,9 @@ Listen 8080
 </VirtualHost>
 EOF
 
-cd /var/www/html
-wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar zxf -
-mv alerta*/app/* .
+cd /tmp
+wget -q -O - https://github.com/alerta/alerta-webui/releases/latest/download/alerta-webui.tar.gz | tar zxf -
+cp -R /tmp/dist/* /var/www/html
 
 cat >/var/www/html/config.json <<EOF
 {"endpoint": "${BASE_URL}"}
