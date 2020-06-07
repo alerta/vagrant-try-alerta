@@ -36,7 +36,6 @@ Each vagrant box is configured to use a different IP address.
 | Alerta (Postgres/Nginx)  | Ubuntu   | alerta-nginx    | http://192.168.0.102 |
 | Alerta (MongoDB/Apache)  | Centos7  | alerta-centos7  | http://192.168.0.103 |                            |
 | Alerta (MongoDB/Apache)  | Amazon2  | alerta-amzn2    | http://192.168.0.104 |
-| Alerta (MongoDB/Apache)  | openSUSE | alerta-opensuse | http://192.168.0.105 |
 
 **Alerta integration combinations**
 
@@ -44,17 +43,16 @@ Each vagrant box is configured to use a different IP address.
 |--------------------|------------------|------|
 | Alerta & Nagios3   | alerta-nagios3   | http://192.168.0.110 http://192.168.0.110/nagios3 |
 | Alerta & Nagios4   | alerta-nagios4   | http://192.168.0.111 http://192.168.0.111/nagios |
-
-| Alerta & Nagios3   | alerta-nagios3   | 192.168.0.101 |                            |
-| Alerta & Zabbix    | alerta-zabbix2   | 192.168.0.102 |                            |
-| Alerta & Riemann   | alerta-riemann   | 192.168.0.103 |                            |
-| Alerta & Sensu     | alerta-sensu     | 192.168.0.104 |                            |
-| Alerta & Kibana3   | alerta-kibana    | 192.168.0.105 |                            |
-| Alerta & kapacitor | alerta-kapacitor | 192.168.0.107 |                            |
-| Alerta & Kibana4   | alerta-kibana4   | 192.168.0.109 |                            |
-| Alerta & Zabbix3   | alerta-zabbix3   | 192.168.0.111 |                            |
-| Alerta & Kibana5   | alerta-kibana5   | 192.168.0.112 |                            |
-| Alerta & Grafana   | alerta-grafana   | 192.168.0.122 | http://192.168.0.121:3000/ |
+| Alerta & Nagios3   | alerta-nagios3   | 192.168.0.101 |
+| Alerta & Zabbix    | alerta-zabbix2   | 192.168.0.102 |
+| Alerta & Riemann   | alerta-riemann   | 192.168.0.103 |
+| Alerta & Sensu     | alerta-sensu     | 192.168.0.104 |
+| Alerta & Kibana3   | alerta-kibana    | 192.168.0.105 |
+| Alerta & kapacitor | alerta-kapacitor | 192.168.0.107 |
+| Alerta & Kibana4   | alerta-kibana4   | 192.168.0.109 |
+| Alerta & Zabbix3   | alerta-zabbix3   | 192.168.0.111 |
+| Alerta & Kibana5   | alerta-kibana5   | 192.168.0.112 |
+| Alerta & Grafana   | alerta-grafana   | http://192.168.0.121:3000/ |
 
 To use the web-based console for the Alerta Riemann vagrant box, for example:
 

@@ -67,16 +67,6 @@ Vagrant.configure("2") do |config|
     alerta.vm.provision :shell, :path => "scripts/centos/apache.sh"
   end
 
-  config.vm.define "alerta-opensuse", primary: true do |alerta|
-    alerta.vm.box = "opensuse/openSUSE-Tumbleweed-x86_64"
-    alerta.vm.box_version = "1.0.6.20180530"
-    alerta.vm.network :private_network, ip: "192.168.0.105"
-    alerta.vm.provision :shell, :path => "scripts/opensuse/base.sh"
-    alerta.vm.provision :shell, :path => "scripts/opensuse/mongodb.sh"
-    alerta.vm.provision :shell, :path => "scripts/opensuse/alerta.sh"
-    alerta.vm.provision :shell, :path => "scripts/opensuse/apache.sh"
-  end
-
   config.vm.define "alerta-nagios3" do |alerta|
     alerta.vm.network :private_network, ip: "192.168.0.110"
     alerta.vm.provision :shell, :path => "scripts/ubuntu/base.sh"
