@@ -10,7 +10,8 @@ import os
 
 def application(environ, start_response):
     os.environ['BASE_URL'] = environ.get('BASE_URL', '')
-    from alerta import app as _application
+    from alerta import create_app
+    _application = create_app()
     return _application(environ, start_response)
 EOF
 

@@ -21,6 +21,9 @@ Vagrant.configure("2") do |config|
   config.vm.box = "bionic64"  # 18.04
   config.vm.box_url = "https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64-vagrant.box"
 
+  # config.vm.box = "focal64"  # 20.04
+  # config.vm.box_url = "https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64-vagrant.box"
+
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
   end
